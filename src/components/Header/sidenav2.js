@@ -8,21 +8,28 @@ import {
   StoreMgtIcon,
   SupportIcon,
   UserIcon,
+  StoreMgtIcon2,
+  ChatIcon,
+  AdminMgtIcon,
+  MealRequestIcon,
+  BlogSettingsIcon,
 } from "../icons";
 import Link from "next/link";
 import styles from "./header.module.css";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { setOpenLogin, userSignOut } from "../../actions";
 import { useRouter } from "next/router";
 import { useAuth } from "../../context/auth.context";
-import icon from '../../../public/assets/fa_shopping-basket.png'
+import icon from "../../../public/assets/fa_shopping-basket.png";
 import Image from "next/image";
 
 function SideNav2(props) {
-  console.log(props, 'pops');
   const { isOpen, setIsOpen } = useAuth();
   const router = useRouter();
+  const selectedUserType = useSelector(
+    (state) => state?.userType?.selectedUserType
+  );
 
   function toggleLogin() {
     props.setOpenLogin(!props.openLogin);
@@ -34,12 +41,12 @@ function SideNav2(props) {
     router.push("/");
   }
 
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('user') || "{}")
-    setUser(data)
-  }, [])
+    const data = JSON.parse(localStorage.getItem("user") || "{}");
+    setUser(data);
+  }, []);
   return (
     <div className={styles.sidenav_links_con}>
       <div className={styles.sidenav_links}>
@@ -83,23 +90,24 @@ function SideNav2(props) {
                 Order
               </div>
             </Link>
-            <Link href="/grocery">
+            <Link href="/groceries">
               <div
                 className={
                   styles.sidenav_link +
                   " " +
-                  (props.path === "/grocery" && styles.active)
+                  (props.path === "/groceries" && styles.active)
                 }
               >
                 {/* <GroceryIcon style={styles.sidenav_link_icon} /> */}
-                <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
-                <Image src={icon} />
-                Grocery List
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  <Image src={icon} />
+                  Grocery List
                 </div>
-                
               </div>
             </Link>
-            {props.auth.authUser.user_type !== "driver" && (
+            {selectedUserType === "admin" && (
               <Link href="/dashboard/suggestedmeals">
                 <div
                   className={
@@ -110,13 +118,27 @@ function SideNav2(props) {
                   }
                 >
                   <HotMealIcon style={styles.sidenav_link_icon} />
-                  {props.auth.authUser.user_type === "admin"
-                    ? "Meal Request"
-                    : "Meal/Product Suggestion"}
+                  Meal Request
                 </div>
               </Link>
             )}
-              <Link href={`/chef/${user?._id}`}>
+
+            {selectedUserType === "supplier" && (
+              <Link href="/dashboard/suggestedmeals">
+                <div
+                  className={
+                    styles.sidenav_link +
+                    " " +
+                    (props.path === "/dashboard/suggestedmeals" &&
+                      styles.active)
+                  }
+                >
+                  <MealRequestIcon style={styles.sidenav_link_icon} />
+                  Meal/Product Suggestion
+                </div>
+              </Link>
+            )}
+            <Link href={`/chef/${user?.username}/${user?._id}`}>
               <div
                 className={
                   styles.sidenav_link +
@@ -136,12 +158,12 @@ function SideNav2(props) {
                   (props.path === "/dashboard/userprofile" && styles.active)
                 }
               >
-                <UserIcon style={styles.sidenav_link_icon} />
+                <StoreMgtIcon style={styles.sidenav_link_icon} />
                 Profile Settings
               </div>
             </Link>
-          
-            {props.auth.authUser.user_type === "supplier" && (
+
+            {selectedUserType === "supplier" && (
               <Link href="/dashboard/manage-store">
                 <div
                   className={
@@ -150,12 +172,12 @@ function SideNav2(props) {
                     (props.path === "/dashboard/manage-store" && styles.active)
                   }
                 >
-                  <StoreMgtIcon style={styles.sidenav_link_icon} />
-                 Manage Stores
+                  <StoreMgtIcon2 style={styles.sidenav_link_icon} />
+                  Manage Stores
                 </div>
               </Link>
             )}
-            {props.auth.authUser.user_type === "admin" && (
+            {selectedUserType === "admin" && (
               <Link href="/dashboard/management">
                 <div
                   className={
@@ -164,12 +186,12 @@ function SideNav2(props) {
                     (props.path === "/dashboard/management" && styles.active)
                   }
                 >
-                  <StoreMgtIcon style={styles.sidenav_link_icon} />
+                  <AdminMgtIcon style={styles.sidenav_link_icon} />
                   Admin Mgt
                 </div>
               </Link>
             )}
-            {props.auth.authUser.user_type === "admin" && (
+            {selectedUserType === "admin" && (
               <Link href="/dashboard/management">
                 <div
                   className={
@@ -178,12 +200,26 @@ function SideNav2(props) {
                     (props.path === "/dashboard/management" && styles.active)
                   }
                 >
-                  <StoreMgtIcon style={styles.sidenav_link_icon} />
+                  <ChatIcon style={styles.sidenav_link_icon} />
                   Chat
                 </div>
               </Link>
             )}
-            {props.auth.authUser.user_type !== "admin" && (
+            {selectedUserType === "admin" && (
+              <Link href="/dashboard/blog/create">
+                <div
+                  className={
+                    styles.sidenav_link +
+                    " " +
+                    (props.path === "/dashboard/blog/create" && styles.active)
+                  }
+                >
+                  <BlogSettingsIcon style={styles.sidenav_link_icon} />
+                  Blog Settings
+                </div>
+              </Link>
+            )}
+            {selectedUserType !== "admin" && (
               <Link href="/support">
                 <div
                   className={
@@ -208,11 +244,11 @@ function SideNav2(props) {
           </div>
         )}
         {props.showBottom && !props.auth.authUser && (
-           <Link href="/login">
-          <div onClick={toggleLogin} className={styles.sidenav_link}>
-            <PowerIcon style={styles.sidenav_link_icon} />
-            <p>Log In</p>
-          </div>
+          <Link href="/login">
+            <div onClick={toggleLogin} className={styles.sidenav_link}>
+              <PowerIcon style={styles.sidenav_link_icon} />
+              <p>Log In</p>
+            </div>
           </Link>
         )}
       </div>

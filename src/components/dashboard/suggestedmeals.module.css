@@ -677,6 +677,7 @@
   display: flex;
   align-items: center;
   height: 6rem;
+  position: relative;
 }
 
 .td_name1 {
@@ -694,6 +695,7 @@
   align-self: center;
   display: flex;
   align-items: center;
+  text-transform: capitalize;
 }
 
 .request_th {
@@ -1048,9 +1050,7 @@
         width: 30%;
         font-size: 11px;
     }
-    .tableactionbutton{
-        font-size: 9px;
-    }
+   
     .td_name{
         width: 25%;
     }
@@ -1063,6 +1063,9 @@
     .td_cat{
         width: 25%;
     } */
+    .tableactionbutton{
+      font-size: 9px;
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -1107,7 +1110,7 @@
   }
 
   .tableactionbutton {
-    width: 90px !important;
+    width: 110px !important;
     height: 24px !important;
     font-size: 8px !important;
     line-height: 11px !important;
@@ -1171,6 +1174,7 @@
     width: 100% !important;
     grid-template-columns: 1.2fr 0fr 1fr 0fr 0fr 0.7fr;
     grid-column-gap: 0rem;
+    padding-right: 1rem;
   }
 
   .hide {
@@ -1189,10 +1193,35 @@
     width: 120px;
     font-size: 10px;
   }
+  .popup {
+    width: 82%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .deletePopup {
+    width: 90px;
+    height: 30px;
+    font-size: 11px;
+  }
+  .deleteOutline {
+    width: 90px;
+    height: 30px;
+  }
+
 }
 
 @media screen and (max-width: 505px) {
   .suggestedmeal_row2 > div > h5 {
     display: none;
+  }
+}
+@media  screen and (max-width: 400px) {
+  .selectContainer {
+    width: 100px;
+    font-size: 10px;
   }
 }

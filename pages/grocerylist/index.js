@@ -24,7 +24,7 @@ const index = () => {
 
   async function fetchItems() {
     try {
-      const response = await fetch(`http://localhost:5000/api/items`, {
+      const response = await fetch(`https://chopchow.app/api/items`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

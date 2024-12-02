@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "src/components/modal/received-rejection.jsx", "src/components/blog/plugins/unordered-list.jsx", "src/components/blog/plugins/underline-plugin.jsx", "src/components/blog/plugins/tool-bar-plugin.jsx", "src/components/blog/plugins/text-align-plugin.jsx", "src/components/blog/plugins/strike-plugin.jsx", "src/components/blog/plugins/ordered-list.jsx", "src/components/blog/plugins/link-plugin.jsx", "src/components/blog/plugins/italics-plugins.jsx", "src/components/blog/plugins/image-call-plugin.jsx", "src/components/blog/plugins/font-size-plugin.jsx", "src/components/blog/plugins/bold-plugin.jsx", "src/components/blog/plugins/align-plugin.jsx", "src/components/blog/plugins/index.js", "src/components/blog/plugins/image-node.jsx"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

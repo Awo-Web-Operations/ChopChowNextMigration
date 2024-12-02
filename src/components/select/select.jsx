@@ -35,11 +35,12 @@ const customStyles = {
   // singleValue: (defaultStyles) => ({ ...defaultStyles, color: "#fff" }),
 };
 
-export const DropDownSelect = ({ placeholder, onSelect, onChange, options, formatOptionLabel, noOptionsMessage}) => {
+export const DropDownSelect = ({ placeholder, onSelect, onChange, options, formatOptionLabel, noOptionsMessage, onMenuScrollToBottom }) => {
 
   return (
     <div className="App">
       <Select
+        onMenuScrollToBottom={onMenuScrollToBottom}
         placeholder={placeholder}
         className='custom'
         onInputChange={(e) => onChange(e)}

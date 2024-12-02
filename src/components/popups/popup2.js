@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
@@ -27,10 +27,12 @@ class Popup2 extends Component {
       length: 0,
       resave: 0,
     };
+    this.modalRef = createRef();
   }
 
   incIn = () => {
     this.setState({
+      ...this.state,
       curIn: this.state.curIn + 1,
     });
   };
@@ -38,14 +40,17 @@ class Popup2 extends Component {
   decIn = () => {
     if (this.state.curIn > 1) {
       this.setState({
+        ...this.state,
         curIn: this.state.curIn - 1,
       });
     }
   };
 
   edit = () => {
+    console.log(this.props, 'this.p')
     const {
       name,
+      imagesData,
       description,
       categories,
       ingredientsList,
@@ -57,6 +62,12 @@ class Popup2 extends Component {
       instructionChunk4Step,
       instructionChunk5Step,
       instructionChunk6Step,
+      instructionChunk1DataName,
+      instructionChunk2DataName,
+      instructionChunk3DataName,
+      instructionChunk4DataName,
+      instructionChunk5DataName,
+      instructionChunk6DataName,
       cookTime,
       prepTime,
       serves,
@@ -67,106 +78,91 @@ class Popup2 extends Component {
       instructionChunk5,
       instructionChunk6,
       chunk1Content,
+      chunk2Content,
+      chunk3Content,
+      chunk4Content,
+      chunk5Content,
+      chunk6Content,
       ingredeints_in_item,
     } = this.props;
+
+    // Determine step inputs based on instruction chunks
     var stepInputs = [];
-    if (instructionChunk1) {
-      stepInputs = [];
-    }
-    if (instructionChunk2) {
-      stepInputs = [2];
-    }
+    if (instructionChunk1) stepInputs = [];
+    if (instructionChunk2) stepInputs = [2];
+    if (instructionChunk3) stepInputs = [2, 3];
+    if (instructionChunk4) stepInputs = [2, 3, 4];
+    if (instructionChunk5) stepInputs = [2, 3, 4, 5];
+    if (instructionChunk6) stepInputs = [2, 3, 4, 5, 6];
 
-    if (instructionChunk3) {
-      stepInputs = [2, 3];
-    }
+    // Format ingredient group list
+    let group = ingredientGroupList.map(ingredient => ({
+      productName: ingredient.product_name?.join(" "),
+      productImgPath: null,
+      quantity: ingredient.quantity,
+      measurement: ingredient.measurement,
+      properIngredientStringSyntax: ingredient.properIngredientStringSyntax,
+    }));
 
-    if (instructionChunk4) {
-      stepInputs = [2, 3, 4];
-    }
-
-    if (instructionChunk5) {
-      stepInputs = [2, 3, 4, 5];
-    }
-
-    if (instructionChunk6) {
-      stepInputs = [2, 3, 4, 5, 6];
-    }
-
-    let group = ingredientGroupList.map((ingredient) => {
-      return {
-        productName: ingredient.product_name?.join(" "),
-        // productImgFile: this.state.currentProductImgSrc,
-        productImgPath: null,
-
-        // these are added to ingredient packets on submit, and not relevant in product object details
-        quantity: ingredient.quantity,
-        measurement: ingredient.measurement,
-        properIngredientStringSyntax: ingredient.properIngredientStringSyntax,
-      };
-    });
-
+    // Define meal object, including conditionally setting image_or_video_content_1
     let meal = {
       mealId: this.props.id,
       mealName: name,
       intro: description,
-
-      // ingredientNames,
-      // do we need product group list AND strings ?
+      mealImagesData: imagesData,
       ingredientGroupList: group,
-      // store product names of inputted strings to compare with db products
       ingredientStrings: ingredientsList,
       ingredeintsInItem: ingredientsInItem,
-      // do we want to use current ingredient formats ? Yes.
-      // currentIngredient,
-      // currentIngredientMeasurement,
-      // currentIngredientQuantity,
-      // currentProductImgSrc,
-      // currentProductDisplayIndex,
-
-      // currentStore,
-
-      // we need to update how we create image paths
-      // productImg_path,
-      // new_product_ingredients,
-      // suggested_stores,
-      // currProductIndexInDBsProductsList,
-      // currStoreIndexIfExistsInProductsList,
       suggestedUtensils: this.props.utensilsList,
-
-      cookTime: cookTime,
-      prepTime: prepTime,
+      cookTime,
+      prepTime,
+      chunk1Content,
+      chunk2Content,
+      chunk3Content,
+      chunk4Content,
+      chunk5Content,
+      chunk6Content,
       instructionChunk1Step,
       instructionChunk2Step,
       instructionChunk3Step,
       instructionChunk4Step,
       instructionChunk5Step,
       instructionChunk6Step,
-      instructionChunk6: this.props.instructionChunk6,
-      instructionChunk1: this.props.instructionChunk1,
-      instructionChunk2: this.props.instructionChunk2,
-      instructionChunk3: this.props.instructionChunk3,
-      instructionChunk4: this.props.instructionChunk4,
-      instructionChunk5: this.props.instructionChunk5,
+      instructionChunk1DataName,
+      instructionChunk2DataName,
+      instructionChunk3DataName,
+      instructionChunk4DataName,
+      instructionChunk5DataName,
+      instructionChunk6DataName,
+      instructionChunk1,
+      instructionChunk2,
+      instructionChunk3,
+      instructionChunk4,
+      instructionChunk5,
+      instructionChunk6,
       instructionWordlength: this.props.instructionWordlength,
-
-      // do we want all the instruction variables ?
-      // instructionGroupList:[],
-
-      // instructionimagesAndVideos,
-
-      // chef,
       suggestedCategories: categories,
       servings: serves,
       tips: this.props.tips,
-      stepInputs: [],
+      stepInputs,
     };
+
+    // Add image_or_video_content_1 if imagesData exists
+    // if (imagesData && imagesData.length > 0) {
+    //   meal.image_or_video_content_1 = imagesData[0]; // Set to the first image as an example
+    // }
+    for (let i = 0; i <= imagesData.length; i++) {
+      meal[`image_or_video_content_${i + 1}`] = imagesData[i]
+    }
+
+    // Save data to local storage and navigate
     localStorage.setItem("suggestionType", "Meal");
     localStorage.setItem("mealId", this.props.id);
-    localStorage.setItem("suggestMealForm", JSON.stringify(meal));
-    console.log(meal, "mealss");
+    localStorage.setItem("suggestMealForm_", JSON.stringify(meal));
     window.location.assign(`/suggestmeal?id=${this.props.id}&item_type=Meal`);
   };
+
+
   handleShareClick = () => {
     const shareUrl =
       "https://www.instagram.com/share/create/?url=" +
@@ -174,7 +170,16 @@ class Popup2 extends Component {
     window.open(shareUrl, "_blank");
   };
 
+  handleClickOutside = (event) => {
+    if (
+      this.modalRef.current &&
+      !this.modalRef.current.contains(event.target)
+    ) {
+      this.props.closeModal();
+    }
+  };
   componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
     console.log(this.props, "props----");
     let length = 0;
 
@@ -182,7 +187,7 @@ class Popup2 extends Component {
       for (let i = 1; i <= 6; i++) {
         console.log(
           this.props["instructionChunk" + i] &&
-            this.props["instructionChunk" + i + "Step"]?.length,
+          this.props["instructionChunk" + i + "Step"]?.length,
           "geee"
         );
         if (
@@ -199,7 +204,13 @@ class Popup2 extends Component {
     }, 1000);
     console.log(length, "length");
   }
-
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+  shouldShowRightArrow = () => {
+    const { curIn, length, instructionChunk } = this.props;
+    return curIn < length && (instructionChunk[curIn] || instructionChunk[curIn + 1]);
+  };
   render() {
     const {
       popupType,
@@ -212,6 +223,7 @@ class Popup2 extends Component {
       ingredientsInItem,
       instructionChunk1,
       isDashboard,
+      chunk1Content,
     } = this.props;
     const { curIn, length } = this.state;
 
@@ -222,7 +234,7 @@ class Popup2 extends Component {
       <>
         {this.props.openModal && (
           <div className={styles.popup2_container}>
-            <div className={styles.popup2}>
+            <div className={styles.popup2} ref={this.modalRef}>
               <div className={styles.popup2_top}>
                 <h2>{popupType}</h2>
                 <CancelIcon
@@ -235,13 +247,11 @@ class Popup2 extends Component {
                   <div className={styles.img_col}>
                     {imagesData?.length !== 0 && (
                       <Image
-                        src={imagesData[0]}
+                        src={imagesData[0] || ""}
                         alt="pop up"
                         className={styles.popup2_main_img}
                         height={160}
                         width={100}
-                        objectFit="cover"
-                        objectPosition="center"
                       />
                     )}
                     {imagesData?.length > 0 && (
@@ -301,16 +311,18 @@ class Popup2 extends Component {
                 </div>
                 <div className={styles.popup2_col_2}>
                   <div className={styles.popup2_details}>
-                    <div >
+                    <div>
                       <h3 className={styles.popup2_category_name}>
                         Ingredients
                       </h3>
                       <table className={styles.table}>
-                        <tr>
-                          <th className={styles.th}>Names</th>
-                          <th className={styles.th}>Quantity</th>
-                          <th className={styles.th}>Measurement</th>
-                        </tr>
+                        <thead>
+                          <tr>
+                            <th className={styles.th}>Names</th>
+                            <th className={styles.th}>Quantity</th>
+                            <th className={styles.th}>Measurement</th>
+                          </tr>
+                        </thead>
                         {!isDashboard ? (
                           ingredientsList?.map((ingredient, index) => (
                             <tr
@@ -348,12 +360,12 @@ class Popup2 extends Component {
                                 key={index}
                               >
                                 <td className={styles.td}>
-                                  {elem.item_quantity}
+                                  {elem.item_name}
                                 </td>
                                 <td className={styles.td}>
-                                  {elem.item_measurement}
+                                  {elem.item_quantity}
                                 </td>
-                                <td className={styles.td}>{elem.item_name}</td>
+                                <td className={styles.td}>{elem.item_measurement}</td>
                               </tr>
                             ))}
                           </>
@@ -364,7 +376,10 @@ class Popup2 extends Component {
                       <h3 className={styles.popup2_category_name}>
                         Meal Category
                       </h3>
-                      <p className={styles.popup2_category}>
+                      <p
+                        className={styles.popup2_category}
+                        style={{ textTransform: "capitalize" }}
+                      >
                         {categories?.map((cat) => (
                           <span>{cat} &nbsp; &nbsp;</span>
                         ))}
@@ -375,63 +390,64 @@ class Popup2 extends Component {
                 <div className={styles.popup2_col_3}>
                   <h2>Recipe Steps</h2>
                   <div className={styles.popup2_steps}>
-                    {this.props["instructionChunk" + curIn] !== "" && (
-                      <>
-                        {allowedImageExtensions.exec(
-                          this.props[`instructionChunk${curIn}DataName`]
-                        ) && (
+                    <>
+                      {allowedImageExtensions.exec(
+                        this.props[`instructionChunk${curIn}DataName`]
+                      ) && (
                           <Image
                             src={this.props["chunk" + curIn + "Content"]}
                             alt={this.props["instructionChunk" + curIn]?.title}
                             className={styles.popup2_step_img}
                             height={150}
-                            width={100}
+                            width={70}
                             objectFit="cover"
                             objectPosition="center"
                           />
                         )}
 
-                        {allowedVideoExtensions.exec(
-                          this.props[`instructionChunk${curIn}DataName`]
-                        ) && (
+                      {allowedVideoExtensions.exec(
+                        this.props[`instructionChunk${curIn}DataName`]
+                      ) && (
                           <video
                             controls
                             className={styles.popup2_step_img}
                             height={150}
                             width={70}
+                            src={this.props[`chunk${curIn}Content`]}
+                            type="video/mp4"
+
                           >
-                            <source
-                              src={this.props["chunk" + curIn + "Content"]}
-                              type="video/mp4"
-                            />
-                            Your browser does not support the video tag.
+                            {/* <source
+                            src={this.props[`chunk${curIn}Content`]}
+                            type="video/mp4"
+                          />
+                          Your browser does not support the video tag. */}
                           </video>
                         )}
-                        <div className={styles.del}>
-                          <h2 className={styles.popup2_step_name}>
-                            {this.props["instructionChunk" + curIn]}
-                          </h2>
-                          <p className={styles.popup2_instructions}>
-                            {this.props[
-                              "instructionChunk" + curIn + "Step"
-                            ]?.map((step, index) => (
+                      <div className={styles.del}>
+                        <h2 className={styles.popup2_step_name}>
+                          {this.props["instructionChunk" + curIn]}
+                        </h2>
+                        <p className={styles.popup2_instructions}>
+                          {this.props["instructionChunk" + curIn + "Step"]?.map(
+                            (step, index) => (
                               <div key={index}>
                                 {index + 1}. {step}
                                 <br />
                               </div>
-                            ))}
-                          </p>
-                        </div>
-                      </>
-                    )}
-                    {this.props["instructionChunk" + (curIn + 1)] !==
-                      undefined &&
-                      curIn <= length && (
-                        <ArrowCircleRightIcon
-                          onClick={this.incIn}
-                          className={styles.popup2_inc_con}
-                        />
-                      )}
+                            )
+                          )}
+                        </p>
+                      </div>
+                    </>
+
+                    {this.props["instructionChunk" + (curIn + 1)] &&
+
+                      <ArrowCircleRightIcon
+                        onClick={this.incIn}
+                        className={styles.popup2_inc_con}
+                      />
+                    }
                     {curIn > 1 && (
                       <ArrowCircleLeftIcon
                         onClick={this.decIn}

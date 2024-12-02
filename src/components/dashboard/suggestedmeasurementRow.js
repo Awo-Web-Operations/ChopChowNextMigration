@@ -2,6 +2,7 @@ import styles from "./suggesteddescription.module.css";
 import axios from "../../util/Api";
 import { FillterIcon } from "../icons";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useRouter } from "next/router";
 
 export const SuggestedMeasurement = ({
   measurements,
@@ -9,6 +10,8 @@ export const SuggestedMeasurement = ({
   deleteMeasurement,
   status,
   setStatus,
+  filteredMesr,
+  handleFilteredMesr
 }) => {
   const handleStatus = () => {
     if (status === "all") {
@@ -23,6 +26,7 @@ export const SuggestedMeasurement = ({
       setStatus("all");
     }
   };
+  const router = useRouter()
   return (
     <div className={styles.container}>
       <table
@@ -30,15 +34,54 @@ export const SuggestedMeasurement = ({
       >
         <thead>
           <tr className={styles.th}>
-            <th className={styles.td}>Name</th>
+            <th className={styles.td} onClick={() => {
+              handleFilteredMesr(
+                "measurement_name",
+                Number(filteredMesr?.measurement_name) === 1
+                  ? -1
+                  : 1
+              )
+            }}>Name</th>
             <th
               className={styles.td}
               style={{ cursor: "pointer" }}
-              onClick={handleStatus}
+              onClick={() => {
+                let item_status = "Public";
+                if (router?.query?.item_status === "Public") {
+                  item_status = "Draft";
+                } else if (
+                  router?.query?.item_status === "Draft"
+                ) {
+                  item_status = "Pending";
+                } else if (
+                  router?.query?.item_status === "Pending"
+                ) {
+                  item_status = "Rejected";
+                } else if (
+                  router?.query?.item_status === "Rejected"
+                ) {
+                  item_status = "Public";
+                }
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    item_status,
+                  },
+                });
+                handleFilteredMesr("status", item_status);
+              }}
             >
               Status <FillterIcon style={styles.FillterIcon} />
             </th>
-            <th className={styles.td}>
+            <th className={styles.td} onClick={() => {
+              handleFilteredMesr(
+                "createdAt",
+                Number(filteredMesr?.createdAt) === 1
+                  ? -1
+                  : 1
+              );
+            }}>
               Date created <FillterIcon style={styles.FillterIcon} />
             </th>
             <th className={styles.td}>Action</th>
@@ -57,10 +100,10 @@ export const SuggestedMeasurement = ({
                     element.status === "Public"
                       ? styles.statusText3
                       : element.status === "Pending"
-                      ? styles.statusText4
-                      : element.status === "Rejected"
-                      ? styles.rejected2
-                      : styles.statusText4
+                        ? styles.statusText4
+                        : element.status === "Rejected"
+                          ? styles.rejected2
+                          : styles.statusText4
                   }
                 >
                   {element?.status}

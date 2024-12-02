@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import styles from "./popup.module.css";
 import Image from "next/image";
@@ -9,8 +9,24 @@ class Popup1 extends Component {
     this.state = {
       product_fetched: false,
     };
+    this.modalRef = createRef();
+  }
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
   }
 
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  handleClickOutside = (event) => {
+    if (
+      this.modalRef.current &&
+      !this.modalRef.current.contains(event.target)
+    ) {
+      this.props.closeModal();
+    }
+  };
   edit = () => {
     const {
       name,
@@ -24,8 +40,10 @@ class Popup1 extends Component {
       ingredientGroupList,
       ingredientsInItem,
       item_description,
+      image,
+      imageData,
     } = this.props;
-    
+
     let group = ingredientGroupList.map((ingredient) => {
       return {
         productName: ingredient.item_name,
@@ -44,6 +62,8 @@ class Popup1 extends Component {
       productName: description,
       utensilName: description,
       intro,
+      imageData,
+      productImagesData: imageData,
       productDescription: intro,
       ingredientsInItem,
       itemType,
@@ -82,19 +102,19 @@ class Popup1 extends Component {
     localStorage.setItem("productId", this.props.id);
     localStorage.setItem("suggestProductForm", JSON.stringify(product));
     console.log(this.props, "orop");
-   if(this.props.itemType === 'Product'){
-    window.location.assign(
-        `/suggestmeal?id=${this.props.id}&item_type=Product`
+    if (this.props.itemType === "Product") {
+      window.location.assign(
+        `/suggestproduct?id=${this.props.id}&item_type=Product`
       );
-   }
-   if(this.props.itemType === 'Utensil'){
-    localStorage.setItem("suggestionType", "Kitchen Utensil")
-    localStorage.setItem("utensilId", this.props.id)
-    localStorage.setItem("suggestUtensilForm", JSON.stringify(product))
-    window.location.assign(
-        `/suggestmeal?id=${this.props.id}&item_type=Kitchen Utensil`
+    }
+    if (this.props.itemType === "Utensil") {
+      localStorage.setItem("suggestionType", "Kitchen Utensil");
+      localStorage.setItem("utensilId", this.props.id);
+      localStorage.setItem("suggestUtensilForm", JSON.stringify(product));
+      window.location.assign(
+        `/suggestUtensil?id=${this.props.id}&item_type=Kitchen Utensil`
       );
-   }
+    }
   };
 
   render() {
@@ -114,14 +134,14 @@ class Popup1 extends Component {
       item_description,
     } = this.props;
     console.log(imageData, "imageData");
-    console.log(this.props, "DISPLAY");
+    console.log(this.props.ingredientList, "DISPLAY");
     console.log("item_description", item_description);
 
     return (
       <>
         {this.props.openModal && (
           <div className={styles.popup_container}>
-            <div className={styles.popup}>
+            <div className={styles.popup} ref={this.modalRef}>
               <div className={styles.popup_col_1}>
                 <div>
                   <Image

@@ -29,18 +29,6 @@ const cartReducer = (state, action) => {
       updatedItems = state.items.concat(action.item);
     }
 
-    //localStorage.setItem("updateItems", updatedItems);
-    //localStorage.setItem("updateAmount", updatedTotalAmount);
-    //const localItems = JSON.parse(localStorage.getItem("updateItems"));
-    //const localAmount = JSON.parse(localStorage.getItem("updateAmount"));
-    //const localState = {
-    //  items: localItems,
-    //  totalAmount: localAmount,
-    //};
-
-    //if (localItems && localAmount) {
-    //  return localState;
-    //}
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
@@ -61,19 +49,6 @@ const cartReducer = (state, action) => {
       updatedItems[existingCartItemIndex] = updatedItem;
     }
 
-    //localStorage.setItem("updateItems", updatedItems);
-    //localStorage.setItem("updateAmount", updatedTotalAmount);
-    //const localItems = JSON.parse(localStorage.getItem("updateItems"));
-    //const localAmount = JSON.parse(localStorage.getItem("updateAmount"));
-    //const localState = {
-    //  items: localItems,
-    //  totalAmount: localAmount,
-    //};
-
-    //if (localItems && localAmount) {
-    //  return localState;
-    //}
-
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
@@ -91,19 +66,6 @@ const cartReducer = (state, action) => {
 
     updatedItems = state.items.filter((item) => item.id !== action.id);
 
-    //localStorage.setItem("updateItems", updatedItems);
-    //localStorage.setItem("updateAmount", updatedTotalAmount);
-    //const localItems = JSON.parse(localStorage.getItem("updateItems"));
-    //const localAmount = JSON.parse(localStorage.getItem("updateAmount"));
-    //const localState = {
-    //  items: localItems,
-    //  totalAmount: localAmount,
-    //};
-
-    //if (localItems && localAmount) {
-    //  return localState;
-    //}
-
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
@@ -111,8 +73,6 @@ const cartReducer = (state, action) => {
   }
 
   if (action.type === "CLEAR_CART") {
-    //localStorage.removeItem("updateItems");
-    //localStorage.removeItem("updateAmount");
     return defaultCartState;
   }
 
@@ -124,22 +84,6 @@ const CartProvider = (props) => {
     cartReducer,
     defaultCartState
   );
-
-  //const reloadValue = window.performance;
-
-  //useEffect(() => {
-  //  if (cartState !== defaultCartState) {
-  //    localStorage.removeItem("cart");
-  //    localStorage.setItem("cart", cartState);
-  //  }
-  //}, [cartState, defaultCartState]);
-
-  //useEffect(() => {
-  //  if (reloadValue.type == 1) {
-  //    const localState = JSON.parse(localStorage.getItem("cart"));
-  //    dispatchCartAction(localState);
-  //  }
-  //}, [reloadValue]);
 
   const addItemToCartHandler = (item) => {
     dispatchCartAction({ type: "ADD", item: item });

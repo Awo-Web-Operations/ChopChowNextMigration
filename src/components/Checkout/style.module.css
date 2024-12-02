@@ -1,0 +1,438 @@
+.font {
+  font-family: "Inter", sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+}
+
+.errorText {
+  color: #d9534f;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 4px;
+  padding-left: 4px;
+  display: block;
+}
+
+.inner_container {
+  padding-inline: 2em;
+  /* padding-top: 1em; */
+  margin-top: 13em;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.constraint {
+  max-width: 1400px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  margin-bottom: 3em;
+}
+.header b {
+  margin-top: 2px;
+  font-size: 1.5em;
+  font-family: "Inter", sans-serif;
+}
+.checkout {
+  display: flex;
+  gap: 2em;
+  justify-content: space-between;
+}
+
+.checkout_left {
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+  flex-basis: 48%;
+}
+.checkout_right {
+  flex-basis: 48%;
+}
+.checkout_right .sticky {
+  position: sticky;
+  top: 200px;
+}
+.box_subscription {
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.box_subscription > div:first-of-type {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.box_subscription > div:first-of-type > label {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  align-items: center;
+}
+.box_subscription > div:first-of-type > label > input {
+  border: 2px solid #ffffff;
+  outline: 1px solid #6d6d6d;
+}
+
+.box_subscription > div:last-of-type {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+.box_subscription > div:last-of-type > label {
+  font-size: 14px;
+}
+.box_subscription > div:last-of-type > select {
+  height: 34px;
+  border: 1px solid #e6e6e6;
+  outline: none;
+  padding-inline: 1em;
+  border-radius: 4px;
+}
+
+/* CONTACT INFORMATION */
+
+.sectionHeaderText {
+  font-size: 1em;
+  font-weight: 700;
+  margin-bottom: 1em;
+}
+.contact_information {
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1em;
+}
+.contact_information > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.contact_information > div:nth-of-type(1) {
+  grid-area: 1 / 1 / 2 / 2;
+}
+.contact_information > div:nth-of-type(2) {
+  grid-area: 1 / 2 / 2 / 3;
+}
+.contact_information > div:nth-of-type(3) {
+  grid-area: 2 / 1 / 3 / 3;
+}
+.contact_information > div:nth-of-type(4) {
+  grid-area: 3 / 1 / 4 / 3;
+}
+.contact_information > div:nth-of-type(5) {
+  grid-area: 4 / 1 / 5 / 3;
+}
+
+.contact_information label {
+  font-size: 12px;
+  color: #6d6d6d;
+}
+
+.contact_information input {
+  height: 34px;
+  border: 1px solid #e6e6e6;
+  outline: none;
+  padding-inline: 1em;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.contact_information input:focus,
+.deliveryAddressUpper input:focus,
+.deliveryAddressLower textarea:focus {
+  outline: 2px solid #00a701;
+}
+
+/* DELIVERY ADDRESS ============================================= */
+
+.deliveryAddress {
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+}
+
+.deliveryAddressUpper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1em;
+}
+.deliveryAddressUpper > div:nth-of-type(1) {
+  grid-area: 1 / 1 / 2 / 3;
+}
+.deliveryAddressUpper > div:nth-of-type(2) {
+  grid-area: 2 / 1 / 3 / 3;
+}
+.deliveryAddressUpper > div:nth-of-type(3) {
+  grid-area: 3 / 1 / 4 / 2;
+}
+.deliveryAddressUpper > div:nth-of-type(4) {
+  grid-area: 3 / 2 / 4 / 3;
+}
+.deliveryAddressUpper > div:nth-of-type(5) {
+  grid-area: 4 / 1 / 5 / 2;
+}
+.deliveryAddressUpper > div:nth-of-type(6) {
+  grid-area: 4 / 2 / 5 / 3;
+}
+/* .deliveryAddressUpper > div:nth-of-type(1) { grid-area: 4 / 2 / 5 / 3; } */
+
+.deliveryAddressUpper > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.deliveryAddressUpper label,
+.deliveryAddressLower label,
+.inputs label {
+  font-size: 12px;
+  color: #6d6d6d;
+}
+
+.deliveryAddressUpper input {
+  height: 34px;
+  border: 1px solid #e6e6e6;
+  outline: none;
+  padding-inline: 1em;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.deliveryAddressLower {
+  margin-top: 1em;
+}
+.deliveryAddressLower textarea {
+  width: 100%;
+  resize: horizontal;
+  height: 120px;
+  border: 1px solid #e6e6e6;
+  transition: all 0.3s;
+  outline: none;
+  padding: 1em;
+  margin-top: 0.45em;
+  border-radius: 4px;
+}
+
+/* card payment ========================================== */
+
+.paymentMethod {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.paymentHeader {
+  margin-bottom: 1em;
+}
+.paymentHeader p {
+  font-size: 14px;
+  color: #949494;
+}
+
+.cardDetailsInput {
+  margin-top: 2em;
+}
+.paymentTypeSelection {
+  display: flex;
+  gap: 2em;
+}
+.paymentTypeSelection span {
+  height: 80px;
+  width: 180px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  cursor: pointer;
+  gap: 0.75em;
+  border-radius: 4px;
+}
+.cardDetailsInput {
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+}
+
+.availableCards {
+  margin-top: 2em;
+  display: flex;
+  gap: 3em;
+  flex-wrap: wrap;
+}
+.availableCards label {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.availableCards label span {
+  height: 50px;
+  width: 80px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.activeCardSelection {
+  border: 1px solid #00a701;
+}
+.availableCards label input {
+  border: 2px solid #ffffff;
+  outline: 1px solid #6d6d6d;
+  height: 24px;
+  width: 25px;
+}
+
+.inputs {
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+}
+.inputs > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.inputs input {
+  height: 34px;
+  border: 1px solid #e6e6e6;
+  outline: none;
+  padding-inline: 1em;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.inputs > div:nth-of-type(3) {
+  flex-direction: row;
+  align-items: center;
+}
+.inputs > div:nth-of-type(3) input {
+  width: 70px;
+}
+.inputs > div:nth-of-type(4) input {
+  width: 100px;
+}
+
+.billingAddress {
+  margin-top: 3em;
+}
+
+.billingAddressCheck {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.orderContainer {
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+}
+.orderContainer .order {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 1em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.order span:first-of-type {
+  flex-basis: 40%;
+}
+
+.orderContainer .calculations {
+  margin-top: 3em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.calculations > div {
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+  align-items: center;
+}
+.calculations > div > p:first-of-type {
+  color: #949494;
+}
+.calculations > div > hr {
+  border: 1px dotted rgba(0, 0, 0, 0.1);
+  stroke-dashoffset: 10px;
+  width: 70%;
+}
+
+.PlaceOrderBtn_container {
+  margin-top: 3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
+}
+.PlaceOrderBtn_container button {
+  height: 40px;
+  width: 100%;
+  background-color: #00a701;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.PlaceOrderBtn_container p {
+  font-size: 14px;
+  text-align: center;
+}
+.PlaceOrderBtn_container a {
+  color: #f47900;
+}
+.show_on_mobile {
+  display: none;
+}
+
+@media screen and (max-width: 992px) {
+  .checkout {
+    flex-direction: column-reverse;
+    gap: 2em;
+  }
+  .checkout_left {
+    gap: 2em;
+  }
+  .show_on_mobile {
+    display: block;
+  }
+  .hide_on_mobile {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 765px) {
+  .inner_container {
+    margin-top: 8em;
+  }
+  .deliveryAddressUpper {
+    grid-template-columns: 100%;
+  }
+  .deliveryAddressUpper > div {
+    grid-area: unset !important;
+  }
+  .contact_information {
+    grid-template-columns: 100%;
+  }
+  .contact_information > div {
+    grid-area: unset !important;
+  }
+}

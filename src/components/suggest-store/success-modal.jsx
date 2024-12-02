@@ -25,7 +25,7 @@ export const SuccessModal = ({
             <div className={styles.btns}>
               <button
                 className={styles.outlineBtn}
-                onClick={() => router.push("/publicMarket")}
+                onClick={() => router.push("/marketplace")}
               >
                 {btnTitle}
               </button>

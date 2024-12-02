@@ -17,7 +17,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import axios from "../../src/util/Api";
 import { GoTriangleUp } from "react-icons/go";
 import { useMediaQuery } from "../../src/hooks/usemediaquery";
-import { TbDotsVertical } from "react-icons/tb";
 import { IoIosCloseCircle } from "react-icons/io";
 import { BsFillCreditCard2BackFill } from "react-icons/bs";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -34,6 +33,7 @@ import { ModalPopup } from "../../src/components/modal/modal";
 import { FormModal } from "../../src/components/modal/form-modal";
 import { SuccessModal } from "../../src/components/suggest-store/success-modal";
 import { getAllISOCodes } from "iso-country-currency";
+import { SubAdmins } from "../../src/components/management";
 
 const List = [
   {
@@ -117,6 +117,7 @@ const Management = () => {
   const ref = useRef();
   const [value, setValue] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
+  const [storeData, setStoreData] = useState(null);
   const [show, setShow] = useState(false);
   const [items, setItems] = useState([]);
   const [store, setStore] = useState([]);
@@ -178,25 +179,24 @@ const Management = () => {
   }
 
   const filteredItem = () => {
-    return userInventory.filter((elem) => elem.item_type === "Meal");
+    if (storeId)
+      return userInventory?.filter((elem) => elem.item_type === "Meal");
   };
 
   const filteredProduct = () => {
-    return userInventory.filter((elem) => elem.item_type === "Product");
+    return userInventory?.filter((elem) => elem.item_type === "Product");
   };
 
   const filteredUtensils = () => {
-    return userInventory.filter((elem) => elem.item_type === "Utensils");
+    return userInventory?.filter((elem) => elem.item_type === "Utensils");
   };
   const [filteredMeals, setFilteredMeals] = useState(filteredItem());
   const [filteredProducts, setFilteredProducts] = useState(filteredProduct());
 
-  console.log(filteredMeals, 'filteredMeals--')
   useEffect(() => {
     setFilteredMeals(filteredItem());
     setFilteredProducts(filteredProduct());
   }, []);
-  console.log(filteredProducts, "jjd");
 
   function handleDayAvailabiltyChange(value, day, when) {
     setTimes({ ...times, [day]: { ...times[day], [when]: value } });
@@ -204,14 +204,14 @@ const Management = () => {
   const handleSearch = () => {
     const filteredMeals = value
       ? filteredItem().filter((meal) =>
-          meal.label.toLowerCase().includes(value.toLowerCase())
-        )
+        meal.label.toLowerCase().includes(value.toLowerCase())
+      )
       : filteredItem();
 
     const filteredProducts = value
       ? filteredProduct().filter((product) =>
-          product.label.toLowerCase().includes(value.toLowerCase())
-        )
+        product.label.toLowerCase().includes(value.toLowerCase())
+      )
       : filteredProduct();
 
     setFilteredMeals(filteredMeals);
@@ -258,31 +258,44 @@ const Management = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}")?._id;
       const response = await axios.get(`/inventory/user-inventory/${user}`);
-      console.log(response, 'repsonse')
-      const resp = response.data.data.inventoryItems.map((element) => {
+      console.log(response.data?.data, "Full API Response");
+
+      const resp = response.data.data.inventoryItems.map((element, index) => {
+        console.log(`Mapping element at index ${index}:`, element);
         return {
-          label: element.item.item_name,
+          label: element.item?.item_name,
           value: element._id,
-          image: element?.item.itemImage0,
-          price: element?.item.item_price
-            ? `${element?.item.item_price}`
+          image: element?.item?.itemImage0,
+          price: element?.item?.item_price
+            ? `${element?.item?.item_price}`
             : "No Price",
-          store: element?.storeId?.store_name || "No store",
+          stores: element?.storeId?.map((store) => store._id) || ["No store"],
           item_type: element?.item_type,
-          currency: element.storeId?.currency?.symbol,
-          item_id: element?.item?._id
+          currency: element.storeId?.[0]?.currency?.symbol || "$",
+          item_id: element?.item?._id,
         };
       });
-      console.log(resp, 'respsp')
+      
+      console.log(resp, 'rep')
       setUserInventory(resp);
-      setFilteredMeals(resp.filter((item) => item.item_type === "Meal"));
-      setFilteredProducts(resp.filter((item) => item.item_type === "Product"));
-      console.log(response.data.data, "resp");
+      setFilteredMeals(
+        resp.filter(
+          (item) => item.item_type === "Meal" && item?.stores.includes(storeId)
+        )
+      );
+      setFilteredProducts(
+        resp.filter(
+          (item) => item.item_type === "Product" && item?.stores.includes(storeId)
+        )
+      );
+
+
     } catch (error) {
       console.log(error);
     }
     return name;
   };
+
 
   const getStore = async (name) => {
     try {
@@ -298,7 +311,6 @@ const Management = () => {
       console.log(error);
     }
   };
-  console.log(formState, "storee");
   useEffect(() => {
     const path = router.asPath.split("#");
     if (Array.isArray(path) && path.length === 2) {
@@ -357,10 +369,10 @@ const Management = () => {
         var image = document.getElementById("profile_picture");
         image.style.display = "block";
         // image.src = URL.createObjectURL(event.target.files[0]);
-        setFormState({
-          ...formState,
-          profile_picture: URL.createObjectURL(event.target.files[0]),
-        });
+        // setFormState({
+        //   ...formState,
+        //   profile_picture: URL.createObjectURL(event.target.files[0]),
+        // });
       } else {
         setFormState({
           ...formState,
@@ -373,10 +385,10 @@ const Management = () => {
         var image = document.getElementById("background_picture");
         image.style.display = "block";
         // image.src = URL.createObjectURL(event.target.files[0]);
-        setFormState({
-          ...formState,
-          background_picture: URL.createObjectURL(event.target.files[0]),
-        });
+        // setFormState({
+        //   ...formState,
+        //   background_picture: URL.createObjectURL(event.target.files[0]),
+        // });
       }
     } else {
       alert("Invalid image type");
@@ -387,7 +399,6 @@ const Management = () => {
     if (storeId) {
       try {
         const response = await axios.get(`/stores/getstore/${storeId}`);
-        console.log("store", response.data.data);
         const store = response?.data?.data?.supplier;
         setFormState({
           store_name: store?.store_name,
@@ -405,6 +416,7 @@ const Management = () => {
           background_picture: store?.background_picture || "",
           store_owner: store?.store_owner || "",
         });
+        setStoreData(store);
         if (store?.background_picture) {
           const image = document.querySelector("#background_picture");
           image.src = store?.background_picture;
@@ -440,20 +452,6 @@ const Management = () => {
     }
   }, [storeId]);
 
-  // const handleClaimStore = async () => {
-  //   try {
-  //     const user = JSON.parse(localStorage.getItem("user") || "{}");
-  //     const form = new FormData();
-  //     for (let element in formState) {
-  //       if (formState[element]) {
-  //         form.append(element, formState[element]);
-  //       }
-  //     }
-  //     form.append("store_owner", user?._id);
-  //     const response = await axios.put(`/stores/updatestore/${storeId}`, form);
-  //     console.log(response.data.data, "response");
-  //   } catch (e) {}
-  // };
   const [categories, setCategories] = useState([
     {
       label: "All categories",
@@ -472,10 +470,10 @@ const Management = () => {
       value: true,
     },
   ]);
+
   const deleteItem = async (id) => {
     try {
       const res = await axios.delete(`/items/delete/${id}`);
-      console.log("resss", res);
       if (res.status === 202) {
         getItem();
         toast.success("Deleted successful");
@@ -499,9 +497,9 @@ const Management = () => {
         }
       }
       const response = await axios.put(`/stores/updatestore/${storeId}`, form);
-      console.log(response.data.data, "responses");
+      handleGetStore();
       toast.success("Store updated");
-    } catch (e) {}
+    } catch (e) { }
   }, [formState, storeId]);
 
   const handleChangeTime = useCallback(async () => {
@@ -521,14 +519,14 @@ const Management = () => {
     try {
       const response = await axios.put(`/stores/updatestore/${storeId}`, form);
       toast.success("Store updated");
-    } catch (e) {}
+    } catch (e) { }
   }, [times]);
 
   const deleteInventory = async (id, item_id) => {
-    console.log(id, 'idd')
     try {
-      const res = await axios.delete(`/inventory/delete-inventory/${id}?item_id=${item_id}`);
-      console.log("resss", res);
+      const res = await axios.delete(
+        `/inventory/delete-inventory/${id}?item_id=${item_id}`
+      );
       if (res.status === 202) {
         fetchOneUserInventory();
         toast.success("Deleted successful");
@@ -542,6 +540,7 @@ const Management = () => {
   useEffect(() => {
     fetchOneUserInventory();
   }, []);
+  console.log(userInventory, "respp")
   return (
     <div className={container + " " + col2}>
       <Head>
@@ -611,12 +610,12 @@ const Management = () => {
                       <h6
                         className={
                           active === elem.id &&
-                          formState.store_owner !== undefined
+                            formState.store_owner !== undefined
                             ? styles.activeText
                             : formState.store_owner === "" &&
                               [3, 4, 5, 6].includes(elem.id)
-                            ? styles.undefinedOwnerText
-                            : styles.name
+                              ? styles.undefinedOwnerText
+                              : styles.name
                         }
                       >
                         {elem.name}
@@ -650,19 +649,19 @@ const Management = () => {
                         ? styles.active2
                         : formState.store_owner === "" &&
                           [3, 4, 5, 6].includes(elem.id)
-                        ? styles.undefinedOwnerText
-                        : styles.inactive
+                          ? styles.undefinedOwnerText
+                          : styles.inactive
                     }
                   >
                     <h6
                       className={
                         active === elem.id &&
-                        formState.store_owner !== undefined
+                          formState.store_owner !== undefined
                           ? styles.activeText2
                           : formState.store_owner === "" &&
                             [3, 4, 5, 6].includes(elem.id)
-                          ? styles.undefinedOwnerText
-                          : styles.name
+                            ? styles.undefinedOwnerText
+                            : styles.name
                       }
                     >
                       {elem.name}
@@ -694,7 +693,9 @@ const Management = () => {
                         <img
                           id="profile_picture"
                           {...(formState.profile_picture && {
-                            src: formState.profile_picture,
+                            src:
+                              formState?.profile_picture_data ??
+                              formState.profile_picture,
                           })}
                           width="100%"
                           height="100%"
@@ -726,7 +727,9 @@ const Management = () => {
                         {" "}
                         <img
                           {...(formState.background_picture && {
-                            src: formState.background_picture,
+                            src:
+                              formState?.background_picture_data ??
+                              formState.background_picture,
                           })}
                           id="background_picture"
                           width="100%"
@@ -851,7 +854,7 @@ const Management = () => {
                       <div className={styles.column}>
                         <label>Address</label>
 
-                        <GooglePlacesAutocomplete
+                        {/* <GooglePlacesAutocomplete
                           defaultInputValue={formState.supplier_address.address}
                           handleValueChange={(
                             address,
@@ -884,7 +887,7 @@ const Management = () => {
                               },
                             });
                           }}
-                        />
+                        /> */}
                       </div>
                     </div>
                     <div className={styles.borderBottom} />
@@ -940,6 +943,7 @@ const Management = () => {
                           onFocus={() => setShow(true)}
                           value={value}
                           onChange={(e) => {
+
                             setValue(e.target.value);
                             fetchOneUserInventory(e.target.value);
                           }}
@@ -951,128 +955,128 @@ const Management = () => {
                             <>
                               {categories.find((ele) => ele.label === "Meals")
                                 ?.value && (
-                                <>
-                                  <h4 className={styles.storeTitle}>
-                                    Meals ({filteredItem().length})
-                                  </h4>
-                                  <div className={styles.bord} />
-                                  <div className={styles.list}>
-                                    {filteredItem().length === 0 ? (
-                                      Boolean(value) ? (
-                                        <div className={styles.result}>
-                                          <p>No Result Found</p>
-                                        </div>
-                                      ) : null
-                                    ) : (
-                                      filteredItem()
-                                        ?.slice(0, 4)
-                                        .map((elem) => (
-                                          <p
-                                            key={elem.value}
-                                            onClick={() => {
-                                              setOneStore({
-                                                visible: false,
-                                                id: "",
-                                              });
-                                              setValue(elem.label);
-                                            }}
-                                            style={{ cursor: "pointer" }}
-                                          >
-                                            {elem.label}
-                                          </p>
-                                        ))
-                                    )}
-                                  </div>
-                                </>
-                              )}
+                                  <>
+                                    <h4 className={styles.storeTitle}>
+                                      Meals ({filteredItem().length})
+                                    </h4>
+                                    <div className={styles.bord} />
+                                    <div className={styles.list}>
+                                      {filteredItem().length === 0 ? (
+                                        Boolean(value) ? (
+                                          <div className={styles.result}>
+                                            <p>No Result Found</p>
+                                          </div>
+                                        ) : null
+                                      ) : (
+                                        filteredItem()
+                                          ?.slice(0, 4)
+                                          .map((elem) => (
+                                            <p
+                                              key={elem.value}
+                                              onClick={() => {
+                                                setOneStore({
+                                                  visible: false,
+                                                  id: "",
+                                                });
+                                                setValue(elem.label);
+                                              }}
+                                              style={{ cursor: "pointer" }}
+                                            >
+                                              {elem.label}
+                                            </p>
+                                          ))
+                                      )}
+                                    </div>
+                                  </>
+                                )}
                             </>
                             <>
                               {categories.find(
                                 (ele) => ele.label === "Products"
                               )?.value && (
-                                <>
-                                  <h4 className={styles.storeTitle}>
-                                    Products ({filteredProduct().length})
-                                  </h4>
-                                  <div className={styles.bord} />
-                                  <div className={styles.list}>
-                                    {filteredProduct().length === 0 ? (
-                                      Boolean(value) ? (
-                                        <div className={styles.result}>
-                                          <p>No Result Found</p>
-                                        </div>
-                                      ) : null
-                                    ) : (
-                                      filteredProduct()
-                                        ?.slice(0, 4)
-                                        .map(
-                                          (elem) =>
-                                            value &&
-                                            elem.label
-                                              .toLowerCase()
-                                              .includes(
-                                                value.toLowerCase()
-                                              ) && (
-                                              <p
-                                                key={elem.value}
-                                                onClick={() => {
-                                                  setOneStore({
-                                                    visible: false,
-                                                    id: "",
-                                                  });
-                                                  setValue(elem.label);
-                                                }}
-                                                style={{ cursor: "pointer" }}
-                                              >
-                                                {elem.label}
-                                              </p>
-                                            )
-                                        )
-                                    )}
-                                  </div>
-                                </>
-                              )}
+                                  <>
+                                    <h4 className={styles.storeTitle}>
+                                      Products ({filteredProduct().length})
+                                    </h4>
+                                    <div className={styles.bord} />
+                                    <div className={styles.list}>
+                                      {filteredProduct().length === 0 ? (
+                                        Boolean(value) ? (
+                                          <div className={styles.result}>
+                                            <p>No Result Found</p>
+                                          </div>
+                                        ) : null
+                                      ) : (
+                                        filteredProduct()
+                                          ?.slice(0, 4)
+                                          .map(
+                                            (elem) =>
+                                              value &&
+                                              elem.label
+                                                .toLowerCase()
+                                                .includes(
+                                                  value.toLowerCase()
+                                                ) && (
+                                                <p
+                                                  key={elem.value}
+                                                  onClick={() => {
+                                                    setOneStore({
+                                                      visible: false,
+                                                      id: "",
+                                                    });
+                                                    setValue(elem.label);
+                                                  }}
+                                                  style={{ cursor: "pointer" }}
+                                                >
+                                                  {elem.label}
+                                                </p>
+                                              )
+                                          )
+                                      )}
+                                    </div>
+                                  </>
+                                )}
                             </>
 
                             <>
                               {categories.find(
                                 (ele) => ele.label === "Kitchen Utensils"
                               )?.value && (
-                                <>
-                                  <h4 className={styles.storeTitle}>
-                                    Kitchen Utensils (
-                                    {filteredUtensils().length})
-                                  </h4>
-                                  <div className={styles.bord} />
-                                  <div className={styles.list}>
-                                    {filteredUtensils().length === 0 ? (
-                                      Boolean(value) ? (
-                                        <div className={styles.result}>
-                                          <p>No Result Found</p>
-                                        </div>
-                                      ) : null
-                                    ) : (
-                                      filteredUtensils()
-                                        ?.slice(0, 4)
-                                        .map((elem) => (
-                                          <p
-                                            key={elem.value}
-                                            onClick={() => {
-                                              setOneStore({
-                                                visible: false,
-                                                id: "",
-                                              });
-                                              setValue(elem.label);
-                                            }}
-                                            style={{ cursor: "pointer" }}
-                                          >
-                                            {elem.label}
-                                          </p>
-                                        ))
-                                    )}
-                                  </div>
-                                </>
-                              )}
+                                  <>
+                                    <h4 className={styles.storeTitle}>
+                                      Kitchen Utensils (
+                                      {filteredUtensils().length})
+                                    </h4>
+                                    <div className={styles.bord} />
+                                    <div className={styles.list}>
+                                      {filteredUtensils().length === 0 ? (
+                                        Boolean(value) ? (
+                                          <div className={styles.result}>
+                                            <p>No Result Found</p>
+                                          </div>
+                                        ) : null
+                                      ) : (
+                                        filteredUtensils()
+                                          ?.slice(0, 4)
+                                          .map((elem) => (
+                                            <p
+                                              key={elem.value}
+                                              onClick={() => {
+                                                setOneStore({
+                                                  visible: false,
+                                                  id: "",
+                                                });
+                                                setValue(elem.label);
+                                              }}
+                                              style={{ cursor: "pointer" }}
+                                            >
+                                              {elem.label}
+                                            </p>
+                                          ))
+                                      )}
+                                    </div>
+                                  </>
+                                )}
                             </>
                           </div>
                         )}
@@ -1094,7 +1098,7 @@ const Management = () => {
                         onClick={() => setShowCategory(!showCategory)}
                       >
                         {categories[0].value &&
-                        categories.some((ele) => !ele.value)
+                          categories.some((ele) => !ele.value)
                           ? "All categories"
                           : categories.find((ele) => ele.value).label}
                         <GoTriangleUp
@@ -1142,7 +1146,10 @@ const Management = () => {
                           ))}
                         </div>
                       )}
-                      <div className={styles.suggestbtn} onClick={() => router.push('/suggestmeal')}>
+                      <div
+                        className={styles.suggestbtn}
+                        onClick={() => router.push("/suggestmeal")}
+                      >
                         <p>+ New Suggestion</p>
                       </div>
                     </div>
@@ -1194,9 +1201,8 @@ const Management = () => {
                               <td
                                 style={{ textAlign: "center" }}
                                 onClick={() => {
-                                  console.log(ele, 'item_idd')
-                                  deleteInventory(ele.value, ele?.item_id)
-                                
+                                  console.log(ele, "item_idd");
+                                  deleteInventory(ele.value, ele?.item_id);
                                 }}
                                 className={styles.close2}
                               >
@@ -1210,63 +1216,65 @@ const Management = () => {
                   )}
                   {categories.find((ele) => ele.label === "Products")
                     ?.value && (
-                    <div className={styles.top}>
-                      <div className={styles.span}>
-                        <p>Product</p>
-                        <p className={styles.red}>Remove selection(s)</p>
+                      <div className={styles.top}>
+                        <div className={styles.span}>
+                          <p>Product</p>
+                          <p className={styles.red}>Remove selection(s)</p>
+                        </div>
+                        <table className={styles.table}>
+                          <thead className={styles.thead}>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th style={{ textAlign: "center" }}>Action</th>
+                          </thead>
+                          <tbody style={{ width: "100%" }}>
+                            {filteredProducts?.map((ele) => (
+                              <>
+                                <tr className={styles.tr}>
+                                  <td
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <input type="checkbox" />
+                                    <Image
+                                      src={ele.image}
+                                      width={40}
+                                      height={40}
+                                      objectFit="contain"
+                                      objectPosition="center"
+                                      style={{ marginLeft: "1rem" }}
+                                    />
+                                    <p className={styles.label}>{ele?.label}</p>
+                                  </td>
+                                  <td
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <p className={styles.label2}>
+                                      {ele.currency}
+                                      {ele?.price}
+                                    </p>
+                                  </td>
+                                  <td
+                                    style={{ textAlign: "center" }}
+                                    onClick={() =>
+                                      deleteInventory(ele.value, ele.item_id)
+                                    }
+                                    className={styles.close2}
+                                  >
+                                    <IoIosCloseCircle color="#949494" size={20} />
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
-                      <table className={styles.table}>
-                        <thead className={styles.thead}>
-                          <th>Name</th>
-                          <th>Price</th>
-                          <th style={{ textAlign: "center" }}>Action</th>
-                        </thead>
-                        <tbody style={{ width: "100%" }}>
-                          {filteredProducts?.map((ele) => (
-                            <>
-                              <tr className={styles.tr}>
-                                <td
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <input type="checkbox" />
-                                  <Image
-                                    src={ele.image}
-                                    width={40}
-                                    height={40}
-                                    objectFit="contain"
-                                    objectPosition="center"
-                                    style={{ marginLeft: "1rem" }}
-                                  />
-                                  <p className={styles.label}>{ele?.label}</p>
-                                </td>
-                                <td
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <p className={styles.label2}>
-                                    {ele.currency}
-                                    {ele?.price}
-                                  </p>
-                                </td>
-                                <td
-                                  style={{ textAlign: "center" }}
-                                  onClick={() => deleteInventory(ele.value, ele.item_id)}
-                                  className={styles.close2}
-                                >
-                                  <IoIosCloseCircle color="#949494" size={20} />
-                                </td>
-                              </tr>
-                            </>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
+                    )}
 
                   {/* <div className={styles.top}>
                   <div className={styles.flex}>
@@ -1419,90 +1427,11 @@ const Management = () => {
                 </div>
               )}
               {active === 5 && (
-                <div>
-                  <div className={styles.flex}>
-                    <h5>Admins</h5>
-                  </div>
-                  <div className={styles.subadmin}>
-                    <div className={styles.flexstart}>
-                      <div className={styles.user}>
-                        <img src="/assets/icons/girl.jpg" />
-                      </div>
-                      <div style={{ marginLeft: "1.5rem" }}>
-                        <h5 className={styles.admin_name}>Rachel Anterta</h5>
-                        <p className={styles.role}>Sub Admin</p>
-                      </div>
-                    </div>
-                    <div className={styles.center}>
-                      <TbDotsVertical color="#949494" size={20} />
-                    </div>
-                  </div>
-                  <div className={styles.flex} style={{ marginTop: "2rem" }}>
-                    <h5>Sub Admins</h5>
-                  </div>
-                  <div className={styles.subadmin}>
-                    <div className={styles.flexstart}>
-                      <div className={styles.user}>
-                        <img src="/assets/icons/girl.jpg" />
-                      </div>
-                      <div style={{ marginLeft: "1.5rem" }}>
-                        <h5 className={styles.admin_name}>Rachel Anterta</h5>
-                        <p className={styles.role}>Sub Admin</p>
-                      </div>
-                    </div>
-                    <div className={styles.center}>
-                      <TbDotsVertical color="#949494" size={20} />
-                    </div>
-                  </div>
-                  <p className={styles.add}>Add New Sub Admin</p>
-                  <div className={styles.payment}>
-                    <div className={styles.contact}>
-                      <p>Contact Information</p>
-
-                      <div className={styles.columnflex}>
-                        <div className={styles.column}>
-                          <label>First Name</label>
-                          <input
-                            onChange={handleChange}
-                            value={formState.city}
-                            type="text"
-                            name="first_name"
-                          />
-                        </div>
-                        <div className={styles.column}>
-                          <label>Last Name</label>
-                          <input
-                            onChange={handleChange}
-                            value={formState.state}
-                            type="text"
-                            name="Last Name"
-                          />
-                        </div>
-                      </div>
-                      <div className={styles.column}>
-                        <label>Email Address</label>
-                        <input
-                          onChange={handleChange}
-                          value={formState.address}
-                          type="text"
-                          name="email"
-                        />
-                      </div>
-                      <div className={styles.column}>
-                        <label>Phone Number</label>
-                        <input
-                          onChange={handleChange}
-                          value={formState.address}
-                          type="text"
-                          name="number"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.flexend}>
-                    <button className={styles.button}> Send Link</button>
-                  </div>
-                </div>
+                <SubAdmins
+                  storeId={storeId}
+                  storeData={storeData}
+                  handleGetStore={handleGetStore}
+                />
               )}
               {active === 6 && (
                 <div>

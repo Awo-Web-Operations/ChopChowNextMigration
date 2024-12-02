@@ -2,14 +2,18 @@ import styles from "./suggesteddescription.module.css";
 import axios from "../../util/Api";
 import { CloseFillIcon, FillterIcon } from "../../components/icons";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useRouter } from "next/router";
 
 export const SuggestedCategories = ({
   categories,
   status,
   setStatus,
   updateCategory,
+  handleCatFilter,
+  filteredCat,
   deleteCategory,
 }) => {
+  const router = useRouter()
   return (
     <div className={styles.container}>
       <table
@@ -17,19 +21,79 @@ export const SuggestedCategories = ({
       >
         <thead>
           <tr className={styles.th1}>
-            <td className={styles.td}>Name</td>
+            <td className={styles.td} onClick={() => {
+              handleCatFilter(
+                "category_name",
+                Number(filteredCat?.category_name) === 1
+                  ? -1
+                  : 1
+              )
+            }}>Name</td>
             <td className={styles.td}>
-              <p>
+              <p onClick={() => {
+                let item_types = "Product";
+                if (router?.query?.item_type === "Product") {
+                  item_types = "Meal";
+                } else if (router?.query?.item_type === "Meal") {
+                  item_types = "Utensil";
+                } else if (
+                  router?.query?.item_type === "Utensil"
+                ) {
+                  item_types = "Product";
+                }
+
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    item_type: item_types,
+                  },
+                });
+                handleCatFilter("type", item_types)
+              }}>
                 Affliated Object <FillterIcon style={styles.FillterIcon} />
               </p>
             </td>
             <td className={styles.td}>
-              <p style={{ cursor: "pointer" }}>
+              <p style={{ cursor: "pointer" }} onClick={() => {
+                let item_status = "Public";
+                if (router?.query?.item_status === "Public") {
+                  item_status = "Draft";
+                } else if (
+                  router?.query?.item_status === "Draft"
+                ) {
+                  item_status = "Pending";
+                } else if (
+                  router?.query?.item_status === "Pending"
+                ) {
+                  item_status = "Rejected";
+                } else if (
+                  router?.query?.item_status === "Rejected"
+                ) {
+                  item_status = "Public";
+                }
+                console.log(router, 'router?.query?.item_status')
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    item_status,
+                  },
+                });
+                handleCatFilter("status", item_status);
+              }}>
                 Status <FillterIcon style={styles.FillterIcon} />
               </p>
             </td>
             <td className={styles.td}>
-              <p>
+              <p onClick={() => {
+                handleCatFilter(
+                  "createdAt",
+                  Number(filteredCat?.createdAt) === 1
+                    ? -1
+                    : 1
+                );
+              }}>
                 Date created <FillterIcon style={styles.FillterIcon} />
               </p>
             </td>
@@ -54,10 +118,10 @@ export const SuggestedCategories = ({
                     (element.status === "Public") | "PUBLIC"
                       ? styles.statusText
                       : (element.status === "Pending") | "PENDING"
-                      ? styles.statusText2
-                      : (element.status === "Rejected") | "Rejected"
-                      ? styles.rejected
-                      : styles.statusText2
+                        ? styles.statusText2
+                        : (element.status === "Rejected") | "Rejected"
+                          ? styles.rejected
+                          : styles.statusText2
                   }
                 >
                   <p style={{ textTransform: "capitalize" }}>

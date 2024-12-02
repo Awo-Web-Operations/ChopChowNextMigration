@@ -59,6 +59,8 @@ const SuggestStore = () => {
     if (details.isStoreOwner) {
       form.append("email", user?.email);
       form.append("store_owner", user?._id);
+    } else {
+      form.append("store_admin", user?._id);
     }
     axios.post("/stores/createstore", form).then((response) => {
       if (response.status >= 200 && response.status < 300) {
@@ -91,7 +93,7 @@ const SuggestStore = () => {
         setIndex((prev) => prev - 1);
       }
     } else {
-      router.push("/publicMarket");
+      router.push("/marketplace");
     }
   }, [details, index]);
 
@@ -104,8 +106,11 @@ const SuggestStore = () => {
           name="viewport"
           content="initial-scale=1.0, width=device-width"
         />
-        <meta name="description" content="Suggest local stores near you without owning the store.
-        Manage your stores to include pictures and prices. We partner with chefs and stores to sell thier products" />
+        <meta
+          name="description"
+          content="Suggest local stores near you without owning the store.
+        Manage your stores to include pictures and prices. We partner with chefs and stores to sell thier products"
+        />
       </Head>
       <Header />
       <Header2 />
@@ -221,10 +226,11 @@ const SuggestStore = () => {
                 <div className={styles.fragment}>
                   <p className={styles.question}>Store Name</p>
                   <input
-                    onChange={() =>
+                    onChange={(e) =>
                       setDetails({
                         ...details,
                         isStoreOwner: true,
+                        title: e.target.value,
                       })
                     }
                     value={details.title}

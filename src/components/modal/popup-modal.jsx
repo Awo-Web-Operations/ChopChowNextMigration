@@ -1,8 +1,3 @@
-import {
-  disableBodyScroll,
-  enableBodyScroll,
-  clearAllBodyScrollLocks,
-} from "body-scroll-lock";
 import styles from "../../components/modal/modal.module.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -34,17 +29,6 @@ export const Modal = ({
     setModalState({ ...modalState, [e.target.name]: e.target.value });
   }
 
-  useEffect(() => {
-    const targetElement = targetElementRef.current;
-
-    disableBodyScroll(targetElement);
-    if (show && targetElement) {
-      disableBodyScroll(targetElement);
-    } else {
-      enableBodyScroll(targetElement);
-    }
-  }, [show]);
-
   const handleCreateLocalGroceryList = useCallback(() => {
     const localGrocery = getLocalGroceryList();
     const payload = {
@@ -56,6 +40,8 @@ export const Modal = ({
       user: JSON.parse(localStorage.getItem("user") || "{}"),
       _id: localGrocery?.length + 1,
     };
+
+    console.log("handleCreate line 88 popup modal", payload)
     const chechHasAlreadyBeenAddedLocally = localGrocery.some(
       (ele) => ele?.listName === listName
     );
@@ -100,7 +86,9 @@ export const Modal = ({
   ]);
 
   const handleCreate = async () => {
-    if (!isUserOnline) {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    console.log("handleCreate line 88 popup modal", user)
+    if (!Boolean(Object.keys(user).length)) {
       handleCreateLocalGroceryList();
     } else {
       if (!modalState.listName && !modalState.description) {
@@ -124,6 +112,7 @@ export const Modal = ({
           addItemToGrocery(modalState.listName);
         }
         fetchList();
+
         if (!addItemToGrocery) {
           toast.success("Grocery list created successfully");
         }
@@ -135,9 +124,9 @@ export const Modal = ({
   };
 
   const handleEdit = async () => {
-    if(!isUserOnline){
-      editLocalList()
-    }else{
+    if (!isUserOnline) {
+      editLocalList();
+    } else {
       if (!modalState.listName && !modalState.description) {
         return alert("Enter List Name and description");
       }
@@ -162,6 +151,7 @@ export const Modal = ({
       }
     }
   };
+  console.log(details, "details");
   return (
     <div className={styles.modal} ref={targetElementRef}>
       <div className={styles.modal_card}>
@@ -201,17 +191,14 @@ export const Modal = ({
         <div
           className={styles.modal_btn}
           onClick={() => {
-            if (details.listName && details.description && details.id) {
+            if (details.listName && details.id) {
               handleEdit();
             } else {
               handleCreate();
             }
           }}
         >
-          <p>
-            {" "}
-            {details.listName && details.description ? "Update" : "Create"} Now
-          </p>
+          <p> {details.listName && details.id ? "Update" : "Create"} Now</p>
         </div>
       </div>
     </div>

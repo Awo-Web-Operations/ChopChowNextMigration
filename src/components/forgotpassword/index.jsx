@@ -7,14 +7,20 @@ import closeIcon from "../../../public/assets/icons/eva_menu-close.png"
 import Image from "next/image";
 import { forgotPassword } from '../../actions';
 import { connect } from 'react-redux';
+import {useRouter} from 'next/router';
+import ForgotPasswordVerifier from '../forgotpasswordverifier';
 
-function ForgetPassword(props){
-
+function ForgetPassword(props){ 
+  const [login, setLogin] = useState(false);
+  const [open, setOpen] = useState(false)
+  //const [forgotPasswordVerifier, setForgotPasswordVerifier] = useState(false);
   const [status, setStatusState] = useState(null);
-  const [message, setMessageState] = useState(null);
+ const [message, setMessageState] = useState(null);
   const [formState, setFormState] = useState({
     email: "",
   });
+
+  const router = useRouter();
   const { email } = formState;
 
   function handleChange(e) {
@@ -24,20 +30,36 @@ function ForgetPassword(props){
   function formSubmit(e){
     e.preventDefault();
     props.forgotpassword(email)
-    props.closeForgetPassword()
+    setTimeout(() => {
+      setOpen(true);
+    }, 1000)
   };
+
+  function Login(){
+    setLogin(true);
+    router.push('/login')
+  }
+
+  const closeForgetPassword = () => {
+    router.push('/login')
+  }
+
+  const Logo = () => {
+    router.push('/')
+  }
 
     return(
         <div className={styles.forgot_password}>
-            <div className={styles.login_top}>
-              <div onClick={props.closeForgetPassword} className={styles.login_cancel_con}>
-                <Image src={closeIcon} className={styles.login_cancel} />
-              </div>
+            <div className={styles.login_top} onClick={Logo}>
+              
               <Image
                   src={img_logo}
                   alt="logo"
                   className={styles.login_main_logo_img}
                 />
+                <div onClick={closeForgetPassword} className={styles.login_cancel_con}>
+                <Image src={closeIcon} className={styles.login_cancel} />
+              </div>
             </div>
             <h2>Forgot Password</h2>
             <h3>Can’t remember your login credentials? Enter your details below and we’ll send instructions if your account exists.</h3>
@@ -62,9 +84,11 @@ function ForgetPassword(props){
   
             <button onClick={formSubmit} className={styles.login_button}>Send reset link</button>
   
-            <h3 onClick={props.closeForgetPassword} className={styles.login_new}>I remember my password</h3>
-
-            {/* <button className={styles.login_button2}>Log in</button> */}
+            <h3  className={styles.login_new}>I remember my password</h3>
+            <button onClick={Login}  className={styles.login_button1}>Log In</button>
+  
+            
+            {open && <ForgotPasswordVerifier message={message} open={open} setOpen={setOpen}/>}
 
         </div>
     )
@@ -78,7 +102,8 @@ function ForgetPassword(props){
   
   function mapDispatchToProps(dispatch) {
     return {
-      forgotpassword: (email) => dispatch(forgotPassword(email))
+      forgotpassword: (email) => dispatch(forgotPassword(email)),
+      
     };
   }
   

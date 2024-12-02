@@ -18,37 +18,36 @@ import Header, { Header2 } from "../src/components/Header/Header";
 import SideNav from "../src/components/Header/sidenav";
 
 import Head from "next/head";
-import GoBack from "../src/components/CommonComponents/goBack";
 import { withRouter } from "next/router";
 class SuggestMeal extends Component {
   allMealNames = [];
-  productNames = [
-    "Spinach",
-    "Brown Beans",
-    "Ijebu Garri",
-    "Honey Beans",
-    "Kale",
-    "Water",
-    "Squash Potatoes",
-    "Oregano",
-    "Cashews",
-    "Palm Oil",
-    "Pineapple",
-    "Onions",
-    "Flour",
-    "Butter",
-    "Sugar",
-    "Hawaiian Bread",
-    "Avocados",
-    "Tomatoes",
-    "Beef",
-    "Green Pepper",
-    "Garlic",
-    "Ginger",
-    "Vegetable Oil",
-    "Lemon",
-    "Rosemary Powder",
-  ];
+  // productNames = [
+  //   "Spinach",
+  //   "Brown Beans",
+  //   "Ijebu Garri",
+  //   "Honey Beans",
+  //   "Kale",
+  //   "Water",
+  //   "Squash Potatoes",
+  //   "Oregano",
+  //   "Cashews",
+  //   "Palm Oil",
+  //   "Pineapple",
+  //   "Onions",
+  //   "Flour",
+  //   "Butter",
+  //   "Sugar",
+  //   "Hawaiian Bread",
+  //   "Avocados",
+  //   "Tomatoes",
+  //   "Beef",
+  //   "Green Pepper",
+  //   "Garlic",
+  //   "Ginger",
+  //   "Vegetable Oil",
+  //   "Lemon",
+  //   "Rosemary Powder",
+  // ];
   productImageLink = [];
   categories = ["Baking", "Cooking", "Home", "Ethiopian", "Quick-Meal"];
   measurements = [
@@ -93,6 +92,7 @@ class SuggestMeal extends Component {
     super(props);
     this.state = {
       currentStore: "",
+      productNames: [],
 
       // we need to update how we create image paths
       productImg_path: "",
@@ -118,124 +118,65 @@ class SuggestMeal extends Component {
 
     // this.getProductIndex = this.getProductIndex.bind(this);
   }
+  async getIngredients() {
+    try {
+      const response = await axios(
+        `/items/1?type=Product&item_status=Public&limit=1000`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = Array.isArray(response.data.data.items)
+        ? response.data.data.items.map((elem) => elem.item_name)
+        : [];
+      this.setState({
+        ...this.state,
+        productNames: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   ///////////////////////////////////////////////////////////////////////////////////////
   componentDidMount() {
     this.openSuggestionModal();
-    console.log("suggestionType---", this.state.suggestionType);
-    console.log(this.props.router, 'this.props.router.query00')
 
+    this.getIngredients();
     setTimeout(() => {
-      this.setState({...this.state, suggestionType: this.props.router?.query?.item_type ?? "Meal"})
-    }, 1000);
-    // get all Meal Names***
-    console.log(this.categories, "categories");
-    // var url = "/meals/get-meals/1";
-    var url = "/items";
-    axios
-      .get(url)
-      .then((body) => {
-        var mealList = body.data;
-        if (mealList) {
-          mealList.data.meals.map((meal) =>
-            // this.allMealNames.push(meal.meal_name)
-            this.allMealNames.push(meal.item_name)
-          );
-        } else {
-          console.log("get all meal names function does not return");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+      this.setState({
+        ...this.state,
+        // suggestionType: this.props.router?.query?.item_type ?? "Meal",
+        suggestionType: "Meal",
       });
+    }, 1000);
 
-    console.log("all meals", this.allMealNames);
-    // get all store names*, if NEW products section exists.
-
-    // can redux resolve this for us by checking if we recently called this in cache or from another page ??
-    // var url = "/get-all-products";
-    // url = "https://chopchowserver.vercel.app/api/meals/get-meals/1";
-
-    // axios.get(url).then((body) => {
-    //   this.productsList = body.data;
-    //   if (this.productsList && this.productsList.data.length !== 0) {
-    //     console.log("returns GET ALL PRODUCTS ");
-    //     for (var i = 0; i < this.productsList.data.length; i++) {
-    //       this.productNames.push(this.productsList.data[i].product_name);
-    //       this.productImageLink.push(this.productsList.data[i].product_image);
-    //     }
-    //   } else {
-    //     console.log("get all products function does not return");
-    //   }
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
-
-    //----get category meals-------------------------
-    url = "/get-all-categories";
-    // axios.get(url).then((body) => {
-    //   var categoriesFromDBList = body.data;
-    //   if (categoriesFromDBList && categoriesFromDBList.data.length !== 0) {
-    //     console.log("returns GET of ALL Categories ");
-
-    //     for (var i = 0; i < categoriesFromDBList.data.length; i++) {
-    //       this.props.categories.push(categoriesFromDBList.data[i].category_name);
-    //     }
-    //     console.log("PRINTING UPDATED CATEGORIES LIST");
-    //   } else {
-    //     console.log("get all products function does not return");
-    //   }
-    // })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
     this.categories = this.props.categories || this.categories;
-    console.log("PROPER", this.props.categories);
   }
 
-  ///////////////////////////////////////////////////////////////////////////////////////
   handleCloseOfMealSubmissinoDialogMessage = () => {
     this.setState({ booleanOfDisplayOfDialogBoxConfirmation: false });
-    // close out of state tracker..
-    // productDisplayBooleansOutOfState[index] = false;
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   openMealDetailsModal = (index) => {
-    // toggle products page visibility for product to be Edited.
-    // this.productDisplayBooleansOutOfState[this.state.ingredientGroupList.length] = false;
-    // this.productDisplayBooleansOutOfState[index] = true;
-
-    // var tmpIngredientGroupList = this.state.ingredientGroupList;
-    // tmpIngredientGroupList[index].display = true;
-    // tmpIngredientGroupList[currentProductDisplayIndex].display = false;
-    // this.setState({ingredientGroupList: tmpIngredientGroupList});
-    console.log("Comes in toggle product details div id. Index is : " + index);
-
     var individualProductDisplay = document.getElementById(
       "ProductAdditionalDataDisplayed"
     );
-    console.log(individualProductDisplay);
 
-    // if (individualProductDisplay.style.display === "block") {
-    //   individualProductDisplay.style.display = "none";
-    // }
-    // else {
-    //   individualProductDisplay.style.display = "block";
-    // }
     this.setState({ openModal: true });
   };
 
   closeModal() {
     this.setState({ openModal: false });
-    // this.props.openModal = false;
-    // this.props.func_removeMealFlag();
   }
   openSuggestionModal() {
     setTimeout(() => {
       if (!localStorage.getItem("x-auth-token")) {
-        this.setState({...this.state, suggestionModal: true });
+        this.setState({ ...this.state, suggestionModal: true });
       }
     }, 3000);
   }
@@ -246,11 +187,33 @@ class SuggestMeal extends Component {
     });
   };
 
+  // handleSuggestionType = (type) => {
+  //   this.setState({
+  //     suggestionType: type,
+  //   });
+  //   this.suggestOption();
+  // };
   handleSuggestionType = (type) => {
-    this.setState({
-      suggestionType: type,
-    });
-    this.suggestOption();
+    const { router } = this.props;
+
+    if (type === "Meal") {
+      router.push("/suggestmeal");
+    }
+    else if (type === "Product") {
+      router.push("/suggestproduct")
+    }
+    else if (type === "Kitchen Utensil") {
+      router.push("/suggestutensil")
+    }
+    else if (type === "Category") {
+      router.push("/suggestcategory")
+    }
+    else {
+      this.setState({
+        suggestionType: type,
+        suggestOption: !this.state.suggestOption,
+      });
+    }
   };
   handleNavigation = () => {
     // Access router properties using this.props.router
@@ -261,12 +224,6 @@ class SuggestMeal extends Component {
   };
   ///////////////////////////////////////////////////////////////////////////////////////
   render() {
-    // const [ingredientInput, setIngredientInput] = useState('');
-
-    // const theme = createMuiTheme({
-    //   palette: { primary: green },
-    // });
-
     const { suggestOption, suggestionType } = this.state;
 
     return (
@@ -282,8 +239,11 @@ class SuggestMeal extends Component {
               name="viewport"
               content="initial-scale=1.0, width=device-width"
             />
-            <meta name="description" content="Share your go to meals and 
-            everyday cooking ingredients and utensils here on Chop Chow" />
+            <meta
+              name="description"
+              content="Share your go to meals and 
+            everyday cooking ingredients and utensils here on Chop Chow"
+            />
           </Head>
           <div className={styles.suggestion_sections}>
             <div className={styles.suggestion_section_1}>
@@ -300,9 +260,9 @@ class SuggestMeal extends Component {
                     </p>
                     <div className={styles.flexCol}>
                       {" "}
-                        <Link href="/login" className={styles.btn}>
-                          Login
-                        </Link>
+                      <Link href="/login" className={styles.btn}>
+                        Login
+                      </Link>
                       <p
                         onClick={() =>
                           this.setState({ suggestionModal: false })
@@ -361,37 +321,14 @@ class SuggestMeal extends Component {
             {suggestionType === "Meal" && (
               <SuggestMealForm
                 allMealNames={this.allMealNames}
-                productNames={this.productNames}
+                productNames={this.state.productNames}
                 measurements={this.measurements}
                 kitchenUtensils={this.kitchenUtensils}
                 categories={this.categories}
                 suggestionType={this.state.suggestionType}
               ></SuggestMealForm>
             )}
-            {suggestionType === "Product" && (
-              <SuggestProductForm
-                allMealNames={this.allMealNames}
-                productNames={this.productNames}
-                measurements={this.measurements}
-                kitchenUtensils={this.kitchenUtensils}
-                categories={this.categories}
-                suggestionType={this.state.suggestionType}
-              ></SuggestProductForm>
-            )}
-            {suggestionType === "Kitchen Utensil" && (
-              <SuggestKitchenUtensilForm
-                measurements={this.measurements}
-                kitchenUtensils={this.kitchenUtensils}
-                categories={this.categories}
-                suggestionType={this.state.suggestionType}
-              ></SuggestKitchenUtensilForm>
-            )}
-            {suggestionType === "Category" && (
-              <SuggestCategoryForm
-                categories={this.categories}
-                suggestionType={this.state.suggestionType}
-              ></SuggestCategoryForm>
-            )}
+
           </div>
           <Dialog
             open={this.state.booleanOfDisplayOfDialogBoxConfirmation}

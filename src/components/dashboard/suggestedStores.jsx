@@ -7,7 +7,7 @@ import WestIcon from "@mui/icons-material/West";
 import moment from "moment";
 import { useState } from "react";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { connect } from "react-redux";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
@@ -21,6 +21,9 @@ const SuggestedStores = ({
   deleteStore,
   changeStoreStatus,
   storeStatus,
+  filteredStores,
+  setFilteredStores,
+  handleFilterStores
 }) => {
   console.log(allstores, "alll");
   const [selectedStore, setSelectedStore] = useState("");
@@ -49,6 +52,7 @@ const SuggestedStores = ({
       console.log(error);
     }
   };
+  console.log(selected, 'selected')
   const router = useRouter();
   return (
     <>
@@ -66,19 +70,69 @@ const SuggestedStores = ({
         >
           <thead>
             <tr className={styles.th1}>
-              <td className={styles.td}>Name</td>
+              <td className={styles.td} onClick={() => {
+                handleFilterStores(
+                  "store_name",
+                  Number(filteredStores?.store_name) === 1
+                    ? -1
+                    : 1
+                );
+              }}>Name</td>
               <td className={styles.td}>
-                <p>
+                <p onClick={() => {
+                  handleFilterStores(
+                    "country",
+                    Number(filteredStores?.country) === 1
+                      ? -1
+                      : 1
+                  );
+                }}>
                   Country <FillterIcon style={styles.FillterIcon} />
                 </p>
               </td>
               <td className={styles.td}>
-                <p style={{ cursor: "pointer" }}>
+                <p style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    let item_status = "Public";
+                    if (router?.query?.item_status === "Public") {
+                      item_status = "Draft";
+                    } else if (
+                      router?.query?.item_status === "Draft"
+                    ) {
+                      item_status = "Pending";
+                    } else if (
+                      router?.query?.item_status === "Pending"
+                    ) {
+                      item_status = "Rejected";
+                    } else if (
+                      router?.query?.item_status === "Rejected"
+                    ) {
+                      item_status = "Public";
+                    }
+                    console.log(router, 'router?.query?.item_status')
+
+                    router.push({
+                      pathname: router.pathname,
+                      query: {
+                        ...router.query,
+                        item_status,
+                      },
+                    });
+                    handleFilterStores("status", item_status);
+                  }}
+                >
                   Status <FillterIcon style={styles.FillterIcon} />
                 </p>
               </td>
               <td className={styles.td}>
-                <p>
+                <p onClick={() => {
+                  handleFilterStores(
+                    "createdAt",
+                    Number(filteredStores?.createdAt) === 1
+                      ? -1
+                      : 1
+                  )
+                }}>
                   Date created <FillterIcon style={styles.FillterIcon} />
                 </p>
               </td>
@@ -141,9 +195,8 @@ const SuggestedStores = ({
           >
             <div
               style={{
-                background: `url(${
-                 selected?.supplier?.background_picture
-                })`,
+                background: `url(${selected?.supplier?.background_picture
+                  })`,
                 width: "100%",
                 backgroundPosition: "center",
                 backgroundSize: "cover",
@@ -171,7 +224,7 @@ const SuggestedStores = ({
                 <p style={{ marginLeft: ".2rem" }}>
                   {" "}
                   {moment(
-                 selected?.supplier?.createdAt
+                    selected?.supplier?.createdAt
                   ).format("MMMM Do, YYYY")}
                 </p>
               </p>
@@ -193,8 +246,8 @@ const SuggestedStores = ({
                   selected?.supplier?.status === "PENDING"
                     ? styles.statusText2
                     : selected?.supplier?.status === "PUBLIC"
-                    ? styles.statusText
-                    : styles.rejected
+                      ? styles.statusText
+                      : styles.rejected
                 }
               >
                 {selected?.supplier?.status}
@@ -214,20 +267,22 @@ const SuggestedStores = ({
                 {changeStoreStatus && (
                   <div className={styles.select_options2}>
                     <p
-                      onClick={() => updateStoreStatus("PUBLIC", selectedStore)}
+                      onClick={() => {
+                        updateStoreStatus("PUBLIC", selected.supplier._id)
+                      }}
                     >
                       Public
                     </p>
                     <p
                       onClick={() =>
-                        updateStoreStatus("PENDING", selectedStore)
+                        updateStoreStatus("PENDING", selected.supplier._id)
                       }
                     >
                       Pending
                     </p>
                     <p
                       onClick={() =>
-                        updateStoreStatus("REJECTED", selectedStore)
+                        updateStoreStatus("REJECTED", selected.supplier._id)
                       }
                     >
                       Rejected
@@ -239,12 +294,12 @@ const SuggestedStores = ({
             <Store
               store={selected.supplier}
               items={
-               selected.items
+                selected.items
               }
             />
           </div>
         )}
-      </div>
+      </div >
     </>
   );
 };

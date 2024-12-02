@@ -1,6 +1,7 @@
 .banner_container {
   height: 300px;
   vertical-align: "top";
+
 }
 
 .banner2container {
@@ -522,7 +523,7 @@
 }
 
 .productcard_productcard_img_container > span {
-  width: 180px !important;
+  width: 200px !important;
   height: 161px !important;
 }
 

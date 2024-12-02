@@ -76,12 +76,12 @@
   height: auto;
 }
 .popup2_main_img {
-  height: 100%;
+  height: 300px;
   width: 100%;
   border-radius: 8px;
   filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.1));
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
+  object-position: center;
 }
 
 .popup2_images {
@@ -564,7 +564,6 @@
 @media screen and (max-width: 560px) {
   .popup2 {
     width: 95%;
-   
   }
 
   .popup2_images {
@@ -576,20 +575,20 @@
   }
   .popup2_main_img {
   }
-  .popup2_col_1{
+  .popup2_col_1 {
     grid-template-columns: 1fr 1fr;
   }
-  .popup2_description{
+  .popup2_description {
     font-size: 10px;
   }
-  .popup2_del li h5{
+  .popup2_del li h5 {
     font-size: 11px;
   }
   .popup2_image {
     width: 45px;
     height: 45px;
   }
-  .popup2_footer p{
+  .popup2_footer p {
     font-size: 9px;
     display: none;
   }
@@ -618,8 +617,6 @@
     font-size: 1rem;
     margin-right: 0.2rem;
   }
-  
-
 }
 
 .-webkit-scrollbar {

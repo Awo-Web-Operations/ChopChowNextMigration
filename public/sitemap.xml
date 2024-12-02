@@ -23,7 +23,7 @@
    </url>
 
     <url>
-      <loc>https://chopchow.app/grocerylists/</loc>
+      <loc>https://chopchow.app/grocery/</loc>
       <changefreq>monthly</changefreq>
       <lastmod>2024-02-18</lastmod>
       <priority>0.8</priority>
@@ -36,11 +36,26 @@
    </url>
 
     <url>
-      <loc>https://chopchow.app/publicMarket/</loc>
+      <loc>https://chopchow.app/marketplace/</loc>
       <lastmod>2024-02-18</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.7</priority>
    </url>
+
+   <url>
+      <loc>https://chopchow.app/chef/</loc>
+      <lastmod>2024-09-28</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+   </url>
+
+   <url>
+      <loc>https://chopchow.app/marketplace/</loc>
+      <lastmod>2024-02-18</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+   </url>
+
 
     <url>
       <loc>https://chopchow.app/suggestameal/</loc>
@@ -56,12 +71,6 @@
    </url>
 
    <url>
-      <loc>https://chopchow.app/chef/</loc>
-      <lastmod>2024-02-18</lastmod>
-      <changefreq>always</changefreq>
-   </url>
-
-    <url>
       <loc>https://chopchow.app/meal/</loc>
       <lastmod>2024-02-18</lastmod>
       <changefreq>always</changefreq>

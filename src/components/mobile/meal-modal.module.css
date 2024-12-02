@@ -1,309 +1,330 @@
 .modalContainer {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.45);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
+.flexer {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+}
 .modalCard {
-    background: #FFF;
-    width: 85%;
-    overflow-y: auto;
-    margin: 0 auto;
-    max-height: 92vh;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  background: #fff;
+  width: 85%;
+  overflow-y: auto;
+  margin: 0 auto;
+  max-height: 92vh;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .flexed {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
 .images1 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin-top: 1.3rem;
-    gap: .5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 1.3rem;
+  gap: 0.5rem;
 }
 
 .images2 {
-    width: 100%;
-    height: 100%;
-    gap: 20px;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
 }
 
 .img1 img {
-    width: 100%;
-    object-fit: cover;
-    height: 50px;
+  width: 100%;
+  object-fit: cover;
+  height: 50px;
 }
 
 .itemName {
-    font-size: 14px;
-    color: #000;
+  font-size: 14px;
+  color: #000;
 }
 
 .intro {
-    font-size: 12px;
-    color: #6D6D6D;
+  font-size: 12px;
+  color: #6d6d6d;
 }
 
 .prepspan {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
 }
 
 .preptext {
-    font-size: 12px;
-    color: #000;
-    text-align: justify;
+  font-size: 12px;
+  color: #000;
+  text-align: left;
 }
 
 .prep {
-    color: #6D6D6D;
-    font-size: 12px;
+  color: #6d6d6d;
+  font-size: 12px;
 }
 
 .flex2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 23%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 23%;
 }
 
 .box2 {
-    width: 2rem;
-    height: 2rem;
-    background: #F47900;
-    display: flex;
-    justify-content: center;
-    color: #FFF;
+  width: 2rem;
+  height: 2rem;
+  background: #f47900;
+  display: flex;
+  justify-content: center;
+  color: #fff;
 }
 
 .storeName {
-    color: #F47900;
-    font-size: 13px;
-    font-weight: 300;
-    margin-top: -1rem;
+  color: #f47900;
+  font-size: 13px;
+  font-weight: 300;
+  margin-top: -1rem;
 }
 
 .modalTitle {
-    color: #000;
-    font-size: 14px;
-    font-weight: 400;
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .modalImg {
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
-    height: 160px;
-    object-position: center;
-    object-fit: contain;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  height: 160px;
+  object-position: center;
+  object-fit: cover;
 }
 
 .th {
-    font-weight: 100;
-    font-size: 12px;
+  font-weight: 100;
+  font-size: 12px;
 }
 
 .thead {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 1rem;
-    padding-bottom: 1rem;
-    padding-left: .6rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 0.6rem;
 }
 
 .td {
-    font-weight: 100;
-    font-size: 12px;
+  font-weight: 100;
+  font-size: 12px;
 }
 
 .tr {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr .8fr;
-    text-align: justify;
-    gap: 1rem;
-    padding: 1rem 1rem;
-
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.8fr;
+  text-align: justify;
+  gap: 1rem;
+  padding: 1rem 1rem;
+  color: #353839;
+  
 }
 
 .tr:nth-child(odd) {
-    background: #F1F1F1;
-    width: 100%;
-    height: 100%;
+  background: #f1f1f1;
+  width: 100%;
+  height: 100%;
 }
 
 .recipes {
-    display: grid;
-    width: 100%;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
 }
 
 .instruction_img {
-    width: 100%;
-    height: 100px;
-    object-fit: cover;
-    object-position: center;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .instructionStep {
-    font-size: 12px;
-    color: #6D6D6D;
-    margin-top: -1rem;
+  font-size: 12px;
+  color: #6d6d6d;
+  margin-top: -1rem;
 }
 
 .close {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .round {
-    width: 2.5rem;
-    height: 2.5rem;
-    color: #FFF;
-    background: #6D6D6D;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #fff;
+  background: #6d6d6d;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .flex {
-    display: flex;
-    justify-content: space-between;
-    width: 85%;
-    margin-left: 10%;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
+  margin-left: 10%;
+  align-items: center;
 }
 
 .underline {
-    text-decoration: underline;
-    text-decoration-color: #F47900;
-    color: #F47900;
-    margin-left: .8rem;
-    font-size: 13px;
-
+  text-decoration: underline;
+  text-decoration-color: #f47900;
+  color: #f47900;
+  margin-left: 0.8rem;
+  font-size: 13px;
 }
 
 .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 1.3rem;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 1.3rem;
 }
 
 .outlinebtn {
-    display: flex;
-    height: 25px;
-    padding: 7px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border-radius: 4px;
-    background-color: transparent;
-    border: .5px solid rgba(0, 0, 0, 0.50);
-    outline: 1px solid rgba(0, 0, 0, 0.50);
-    color: #353535;
-    font-size: 10px;
-    font-weight: 500;
+  display: flex;
+  height: 25px;
+  padding: 7px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background-color: transparent;
+  border: 0.5px solid rgba(0, 0, 0, 0.5);
+  outline: 1px solid rgba(0, 0, 0, 0.5);
+  color: #353535;
+  font-size: 10px;
+  font-weight: 500;
 }
 
 .btn {
-    display: flex;
-    height: 25px;
-    padding: 7.4px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 4px;
-    background: #F47900;
-    flex-shrink: 0;
-    color: #FFF;
-    font-size: 10px;
-    font-weight: 400;
-    border: #F47900;
-    outline: #F47900;
+  display: flex;
+  height: 25px;
+  padding: 7.4px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  background: #f47900;
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 400;
+  border: #f47900;
+  outline: #f47900;
 }
 
 .modalCard3 {
-    background: #FFF;
-    width: 90%;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
-    padding: 0rem 2.5rem 2rem 2.5rem;
+  background: #fff;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  padding: 0rem 2.5rem 2rem 2.5rem;
 }
 
 .addTitle {
-    color: #000;
-    font-size: 17px;
-    font-weight: 400;
+  color: #000;
+  font-size: 17px;
+  font-weight: 400;
 }
 
 .list {
-    display: flex;
-    align-items: center;
-    margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .list input[type="checkbox"] {
-    width: 15px;
-    height: 15px;
+  width: 15px;
+  height: 15px;
 }
 
 .list p {
-    margin-left: .7rem;
-    font-weight: 200;
-    font-size: 12px;
-    color: #000;
+  margin-left: 0.7rem;
+  font-weight: 200;
+  font-size: 12px;
+  color: #000;
 }
 
 .flex3 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.ul li{
-    list-style-type: decimal;
-    margin-top: 10px;
+.ul li {
+  list-style-type: decimal;
+  margin-top: 10px;
 }
-.ul{
-    padding-left: 1rem;
+.ul {
+  padding-left: 1rem;
 }
-@media only screen and (max-width: 420px){
-    .recipes {
-        display: grid;
-        grid-template-columns: 1fr;
-    }
+@media only screen and (max-width: 550px) {
+  .modalCard {
+    background: #fff;
+    width: 95%;
+  }
+  .thead {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding-bottom: 1rem;
+  }
+  .tr {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    text-align: justify;
+    gap: 1rem;
+    padding: 1rem 1rem;
+  }
 }
-@media only screen and (max-width: 390px){
-    .preptext {
-        font-size: 10px;
-        color: #000;
-        text-align: justify;
-    }
-    
-    .prep {
-        color: #6D6D6D;
-        font-size: 11px;
-    }
-    .underline {
-        font-size: 11px;
-    
-    }
+@media only screen and (max-width: 420px) {
+  .recipes {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+@media only screen and (max-width: 390px) {
+  .preptext {
+    font-size: 10px;
+    color: #000;
+    text-align: justify;
+  }
+
+  .prep {
+    color: #6d6d6d;
+    font-size: 11px;
+  }
+  .underline {
+    font-size: 11px;
+  }
 }

@@ -1,4 +1,6 @@
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import '../src/styles/home.styles.css'
+import '../src/styles/carousel.styles.css'
 import "../src/App.css";
 import { wrapper, } from "../src/store/index";
 import { persistor, store } from '../src/store/index'
@@ -10,12 +12,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PersistGate } from 'redux-persist/integration/react'
 import { CartProvider } from "../src/context/cart.context";
 import { AuthProvider } from "../src/context/auth.context";
+import useInactivityLogout from "../src/util/useinactivity";
+import Hotjar from '@hotjar/browser';
 
+const siteId = process.env.NEXT_PUBLIC_siteId;
+const hotjarVersion = 6;
+
+Hotjar.init(siteId, hotjarVersion);
 
 function MyApp({ Component, pageProps }) {
+  useInactivityLogout(1200000)
   return (
     <>
-      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+      <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <AuthProvider>

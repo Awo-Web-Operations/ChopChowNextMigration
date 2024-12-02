@@ -6,8 +6,7 @@ import { useEffect } from "react";
 import CartProvider from "./store/CartProvider";
 import Head from "next/head";
 
-  import { ToastContainer, toast } from 'react-toast'
-
+import { ToastContainer, toast } from "react-toast";
 
 // import { Route, Switch, Redirect } from "react-router-dom";
 // import HomePage from "./components/HomePage";
@@ -30,6 +29,7 @@ import { connect } from "react-redux";
 import axios from "../src/util/Api";
 import productsObj from "../src/custom_data/products.json";
 import SideNav from "../src/components/Header/sidenav";
+import HomePage from "./home";
 // import { createMuiTheme, ThemeProvider } from '@mui/material';
 
 class App extends Component {
@@ -127,15 +127,19 @@ class App extends Component {
             name="viewport"
             content="initial-scale=1.0, width=device-width"
           />
-          <meta name="description" content="Adding convenience to your home cooking." />
+          <meta
+            name="description"
+            content="Adding convenience to your home cooking."
+          />
         </Head>
 
         <Header />
         <Header2 />
         <SideNav />
+        <HomePage />
 
-        <LandingPage />
-        <Footer />
+        {/* <LandingPage /> */}
+        <Footer footer="shape 2" />
       </CartProvider>
     );
   }
@@ -143,56 +147,3 @@ class App extends Component {
 
 // export default App;
 export default App;
-{
-  /* <Switch>
-                    <Route exact path="/login"
-                        render={() => (<Login openFlag={true} />)}
-                    />
-                    <Route exact path="/admin" render={(props) => {
-                        return ((customer_id !== undefined) && userRole === 'admin' ? <AdminPanel {...props} /> : <Redirect to={{ pathname: "#" }} />)
-                    }} />
-                    <Route exact path="/signup" render={(props) => <SignUp {...props} />} />
-                    <Route exact path="/resetpass" render={(props) => <ResetPassword {...props} />} />
-                    <Route exact path="/forgotpass" render={(props) => <ForgotPassword {...props} />} />
-
-                    <Route exact path="/" render={(props) => <HomePage {...props} />} />
-
-                    {/* <Route path="/home" render={() => (customer_id !== undefined) ? <HomePage /> : (<Redirect to={{ pathname: "#" }} />)} /> 
-                    <Route path="/home" render={(props) => <HomePage {...props} />} />
-
-                    <Route path="/v2" render={() => <MealsPage productsObj={productsObj} />} />
-                    <Route path="/v3" render={() => <VSMealsPage />} />
-
-                    <Route exact path="/grocery" render={() => {
-                        return ((customer_id !== undefined || customer_id !== 'null') ? <GroceryPage productNames={this.productNames} /> : <Redirect to={{ pathname: "#" }} />)
-                    }} />
-
-                    <Route path="/products" render={(props) => {
-                        return <ProductsSection />
-                    }} />
-                    <Route exact path="/SuggestProduct" render={(props) => {
-                        console.log("Customer Id:", customer_id)
-                        return (
-                            <SuggestProduct />
-                        )
-                    }} />
-                    <Route exact path="/SuggestMeal" render={(props) => {
-                        console.log("Customer Id:", customer_id)
-                        return (
-                            <SuggestMeal productNames={this.productNames} allMealNames={this.allMealNames}
-                                measurements={this.measurements} kitchenUtensils={this.kitchenUtensils}
-                                categories={this.categories} />
-                            // (customer_id !== undefined) ? <SuggestMeal /> : <Redirect to={{ pathname: "#" }} /> )
-                        )
-                    }} />
-                    {/* <Route exact path="/ViewSuggestedMeals" render={(props) => ((customer_id !== undefined) && (userRole === "admin")) ? <ViewSuggestedMeals /> : (<Redirect to={{ pathname: "#" }} />)} /> 
-                    <Route exact path="/ViewSuggestedMeals"
-                        render={(props) => <ViewSuggestedMeals
-                            kitchenUtensils={this.kitchenUtensils}
-                            categories={this.categories}
-                            productNames={this.productNames}
-                            measurements={this.measurements} />} />
-                    {/* <Route path="/product-detail/:customerId/:productId" render={(props) => (customer_id !== undefined) ? <ProductFullDetail /> : (<Redirect to={{ pathname: "#" }} />)} /> 
-                    {/* <Route path="/product-detail/:customerId/:productId" component={ProductFullDetail} /> 
-                </Switch> */
-}

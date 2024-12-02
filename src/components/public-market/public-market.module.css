@@ -9,6 +9,22 @@
   position: relative;
 }
 
+.marketplace{
+  padding-left: 4%;
+  margin-top: 6rem;
+}
+.marketplace h1{
+  font-size: 30px;
+  font-weight: 600;
+  font-family: Inter;
+}
+.marketplace p{
+  font-size: 15px;
+  font-weight: 300;
+  font-family: Inter;
+  color: #6D6D6D;
+  margin-top: -.6rem;
+}
 .header {
   width: 100%;
   height: 70px;
@@ -126,12 +142,74 @@
   font-weight: 300;
   position: relative;
 }
+.cats {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  height: 40px;
+  width: 130px;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-right: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  color: rgba(109, 109, 109, 1);
+}
+.leftBorder {
+  height: 40px;
+  margin: auto;
+  width: 1px;
+  background-color: #9d9d9d;
+}
+.searchboxfield {
+  position: relative;
+  background: #fff;
+  display: flex;
+  width: 90%;
+  gap: 10px;
+  align-items: center;
+  font-size: 11px;
+  height: 40px;
+  padding: 0.5rem 1.5rem;
+  color: #353535;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.searchboxfield input {
+  outline: none;
+  border: none;
+  width: 100%;
+}
+.searchboxfield input::placeholder {
+  color: rgba(148, 148, 148, 1);
+}
+.searchDropdown {
+  width: 100%;
+  top: 42px;
+  right: 0%;
+}
 
+.searchbtn {
+  height: 40px;
+  width: 38px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  margin-left: 5px;
+  background: #f47900;
+  border: none;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .categories {
-  width: 20rem;
+  width: 130px;
   background-color: #fff;
   border-radius: 0 4px 4px 0;
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
   padding: 0 1.5rem 2.5rem 1.5rem;
   position: absolute;
   z-index: 2;
@@ -140,12 +218,17 @@
 
 .categories p {
   padding-top: 2rem;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
+  font-weight: 400;
 }
 
 .rotate {
   transform: rotate(180deg);
+  margin-left: 5px;
+}
+.nonrotate {
+  margin-left: 5px;
 }
 
 .two {
@@ -166,8 +249,9 @@
   margin-top: -0.6rem;
   z-index: 200;
 }
-.two3{
-  display: none;
+.two3 {
+  display: flex;
+  width: 100%;
 }
 
 .search {
@@ -189,8 +273,8 @@
 
 .searchDropdown {
   z-index: 1000;
-  width: 100%;
   height: 50vh;
+  width: 100%;
   padding: 1.2rem 2rem 2rem 2rem;
   overflow-y: scroll;
   position: absolute;
@@ -261,11 +345,11 @@
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.05);
 }
 .searchfield input {
-  height: 53px;
+  height: 40px;
   width: 100%;
   outline: none;
   padding-left: 2rem;
-  border: 0px solid rgba(148, 148, 148, 0.6);
+  border: 1px solid rgba(148, 148, 148, 0.6);
   background: #fff;
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.05);
 }
@@ -275,27 +359,12 @@
   width: 90%;
 }
 
-.searchbtn {
-  display: flex;
-  height: 53px;
-  border: none;
-  outline: none;
-  padding: 14px 30px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0px 4px 4px 0px;
-  background: #f47900;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 500;
-}
-
 .storeContainer {
   background: #fcfcfc;
   width: 100%;
   height: 100%;
   position: relative;
-  padding-top: 20rem;
+  padding-top: 3rem;
 }
 
 .dropdown {
@@ -334,7 +403,7 @@
 }
 
 .mealCard {
-  width: 90%;
+  width: 92%;
   height: 158px;
 }
 
@@ -703,7 +772,7 @@
 .rate {
   font-size: 20px;
 }
-.two2{
+.two2 {
   display: flex;
 }
 .text {
@@ -804,11 +873,10 @@
   .two2 {
     padding-left: 22%;
     display: flex;
-  }.two3{
-    display: none;
   }
+
   .storeContainer {
-    padding-top: 25rem;
+    padding-top: 4rem;
   }
 }
 
@@ -854,7 +922,7 @@
   }
 
   .storeContainer {
-    padding-top: 30rem;
+    padding-top: 3rem;
   }
 
   .profile_picture {
@@ -864,6 +932,17 @@
 
   .rightside {
     width: 65%;
+  }
+  .marketplace{
+    margin-top: 10rem;
+  }
+  .marketplace h1{
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .marketplace p{
+    font-size: 13px;
+    padding-right: 5%;
   }
 }
 
@@ -885,12 +964,23 @@
     width: 100%;
     padding-left: 3rem;
     flex-direction: column;
-    top: 260px;
+    top: 160px;
+    position: relative;
   }
 
   .header {
-    top: 118px;
+    position: relative;
+    top: 100px;
     padding: 0.5rem 2rem 0.5rem 2rem;
+  }
+  .searchbar {
+    padding-left: 6rem;
+  }
+  .locationIcon {
+    top: 30%;
+  }
+  .storeContainer {
+    padding-top: 7rem;
   }
 
   .profile_picture {
@@ -917,51 +1007,40 @@
 
 @media only screen and (max-width: 768px) {
   .header2 {
-    top: 228px;
+    top: 100px;
     padding-bottom: 1rem;
+    position: relative;
   }
   .two2 {
-    display: none
+    display: none;
   }
-  .two3{
+  .categories {
+    margin-top: 0.2rem;
+  }
+  .searchflex {
     display: flex;
-    position: absolute;
+    width: 77%;
+  }
+  .two3 {
+    display: flex;
     width: 100%;
     top: 63px;
     right: 0;
-    gap: 0.2rem;
-    padding-right: 5%;
     padding-left: 5%;
-    background-color: #F9F9F9;
-  }
-  .searchfield {
-    width: 100%;
-    height: 45px;
-    margin-top: -0.3rem;
-  }
-  .searchfield input {
-    width: 100%;
-    height: 45px;
-    font-size: 11px;
+    padding-bottom: 0.7rem;
+    padding-top: 0.7rem;
+    margin-top: -1rem;
   }
 
-  .searchbtn {
-    height: 45px;
-    padding: 5px 10px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0px 4px 4px 0px;
-    background: #f47900;
-    color: #fff;
+  .storeContainer {
+    padding-top: 2rem;
   }
-  .storeContainer{
-    padding-top: 22rem;
-  }
-  .header{
-    background-color: #F9F9F9;
+  .header {
+    background-color: #f9f9f9;
     height: 79px;
+    top: 50px;
   }
-  .title{
+  .title {
     color: #000;
   }
 }
@@ -969,8 +1048,7 @@
 @media only screen and (max-width: 600px) {
   .header2 {
     flex-direction: column;
-    top: 206px;
-
+    top: 120px;
   }
   .searchbtn {
     height: 45px;
@@ -993,13 +1071,16 @@
     height: 39px;
     font-size: 12px;
   }
+  .marketplace{
+    margin-top: 9rem;
+  }
 }
 
 @media only screen and (max-width: 520px) {
   .header2 {
     flex-direction: column;
     position: relative;
-    top: 110px;
+    top: 90px;
     padding-left: 2rem;
   }
 
@@ -1056,18 +1137,33 @@
     font-size: 11px;
   }
   .searchbtn {
-    height: 45px;
+    height: 40px;
     padding: 5px 13px;
     font-size: 10px;
+    border-radius: 15%;
   }
   .searchDropdown {
     height: 30vh;
     padding: 1.2rem 1rem 1rem 1rem;
   }
   .storeContainer {
-    padding-top: 12rem;
+    padding-top: 9rem;
   }
   .storeContainer h4 {
     font-size: 18px;
   }
+  .marketplace{
+    margin-top: 13rem;
+  }
 }
+/* @media screen and (orientation: landscape) {
+  .header {
+    top: 50px;
+  }
+  .searchbar {
+    padding-left: 6rem;
+  }
+  .locationIcon{
+    top: 30%;
+  }
+} */

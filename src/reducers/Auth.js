@@ -1,4 +1,4 @@
-import { INIT_URL, SIGNOUT_USER_SUCCESS, USER_DATA, USER_TOKEN_SET, USER_ROLE, CUSTOMER_ID, IS_AUTHENTICATED, OPEN_LOGIN, IS_VERIFIED } from "../constants/ActionTypes";
+import { INIT_URL, SIGNOUT_USER_SUCCESS, USER_DATA, USER_TOKEN_SET, USER_ROLE, CUSTOMER_ID, IS_AUTHENTICATED, OPEN_LOGIN, IS_VERIFIED, EMAIL_VERIFIED, PHONE_NUMBER_VERIFIED } from "../constants/ActionTypes";
 
 
 
@@ -7,8 +7,11 @@ import { INIT_URL, SIGNOUT_USER_SUCCESS, USER_DATA, USER_TOKEN_SET, USER_ROLE, C
         initURL: '',
         authUser: null,
         isVerified: false,
+        isEmailVerified: false,
+        isNumberVerified: false,
         isAuthenticated: false,
-        openLogin: false
+        openLogin: false,
+       
     };
 
 
@@ -56,7 +59,19 @@ export default (state = INIT_STATE, action) => {
         case IS_VERIFIED: {
             return {
                 ...state,
-                isVerified: action.payload
+                isVerified: action.payload,
+            }
+        }
+        case EMAIL_VERIFIED: {
+            return {
+                ...state,
+                isEmailVerified: action.payload,
+            }
+        }
+        case PHONE_NUMBER_VERIFIED: {
+            return {
+                ...state,
+                isNumberVerified: action.payload
             }
         }
         case USER_ROLE: {
@@ -75,3 +90,4 @@ export default (state = INIT_STATE, action) => {
             return state;
     }
 }
+

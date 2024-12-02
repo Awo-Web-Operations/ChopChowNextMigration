@@ -11,7 +11,7 @@
   height: 87px;
 
   background: #000000;
-  width: 100%;
+  width: 100vw;
   padding: 1rem 0;
   display: grid;
   justify-items: center;

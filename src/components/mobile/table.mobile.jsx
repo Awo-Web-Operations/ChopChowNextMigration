@@ -30,8 +30,13 @@ export const MobileTable = ({
                   className={styles.td2}
                   style={{ cursor: "pointer", paddingRight: "2rem" }}
                 >
-                  <div style={{ width: "30%" }}>
-                    <Image src={Frame} height={45} width={45} />
+                  <div style={{ width: "30%",}}>
+                    <Image
+                      src={Frame}
+                      height={45}
+                      width={45}
+                      style={{ borderRadius: "4px" }}
+                    />
                   </div>
                   <div
                     style={{
@@ -76,6 +81,7 @@ export const MobileTable = ({
                       }
                       height={45}
                       width={45}
+                      style={{borderRadius: '4px'}}
                     />
                   </div>
                   <div
@@ -123,13 +129,42 @@ export const MobileTable = ({
                   style={{ cursor: "pointer", paddingRight: "2rem" }}
                 >
                   <div style={{ width: "30%" }}>
-                    {element?.item?.itemImage0 && (
-                      <Image
-                        src={element?.item?.itemImage0}
-                        height={45}
-                        width={45}
-                      />
-                    )}
+                  {element?.item?.itemImage0 ? (
+                              <Image
+                                src={element?.item?.itemImage0}
+                                height={45}
+                                width={45}
+                                style={{ borderRadius: "4px" }}
+                              />
+                            ) : element.item?.item_type === "Meal" ? (
+                              <Image
+                                src="/assets/store_pics/no-image-meal.png"
+                                height={45}
+                                width={45}
+                                style={{ borderRadius: "5px" }}
+                              />
+                            ) : element.item?.item_type === "Product" ? (
+                              <Image
+                                src="/assets/store_pics/no-image-product.png"
+                                height={45}
+                                width={45}
+                                style={{ borderRadius: "5px" }}
+                              />
+                            ) : element.item?.item_type === "Utensil" ? (
+                              <Image
+                                src="/assets/store_pics/no-image-utensil.png"
+                                height={45}
+                                width={45}
+                                style={{ borderRadius: "5px" }}
+                              />
+                            ) : (
+                              <Image
+                                src="/assets/store_pics/no-image-meal.png"
+                                height={45}
+                                width={45}
+                                style={{ borderRadius: "5px" }}
+                              />
+                            )}
                   </div>
                   <div
                     style={{
@@ -150,7 +185,7 @@ export const MobileTable = ({
                     >
                       {element?.item?.item_name}
                     </p>
-                    <p className={styles.supplier}>
+                    {/* <p className={styles.supplier}>
                       <p
                         style={{
                           color: "rgba(109, 109, 109, 1)",
@@ -162,7 +197,7 @@ export const MobileTable = ({
                       {element?.item?.store_name
                         ? element?.item?.store_name
                         : "-"}
-                    </p>
+                    </p> */}
                     {element?.item?.item_type === "Meal" ? (
                       <div>
                         {matches ? (

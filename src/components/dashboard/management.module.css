@@ -13,7 +13,29 @@
   position: relative;
   gap: 10%;
 }
+.removeAdmin {
+  position: absolute;
+  padding: 1rem 2rem;
+  box-shadow: 0px 4px 10px 0px rgba(96, 95, 95, 0.1);
+  right: 2rem;
+  top: 7rem;
+  z-index: 1000;
+  background-color: #fff;
+}
+.removeAdmin p{
+  margin-top: 1rem;
+  font-size: 14px;
+  cursor: pointer;
+}
+.closeIcon{
+  color: red;
+cursor: pointer;
 
+}
+.closeContainer{
+  display: flex;
+  justify-content: flex-end;
+}
 .summaryCard {
   width: 80%;
   margin: auto;
@@ -310,10 +332,10 @@
   border-radius: 0px 0px 4px 4px;
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
-.storeTitle{
+.storeTitle {
   font-size: 18px;
 }
-.searchDropdown p{
+.searchDropdown p {
   font-size: 14px;
 }
 .searchflex {
@@ -504,6 +526,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .add {
@@ -565,6 +588,7 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  text-transform: capitalize;
 }
 
 .role {

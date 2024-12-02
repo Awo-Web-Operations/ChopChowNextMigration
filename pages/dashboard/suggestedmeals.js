@@ -19,7 +19,7 @@ import Sidenav2 from "../../src/components/Header/sidenav2";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "../../src/util/Api";
 import Meal from "../../src/components/individualPage/Meal";
@@ -32,6 +32,7 @@ import Popup1 from "../../src/components/popups/popup1";
 import Product from "../../src/components/individualPage/Product";
 import AddIcon from "@mui/icons-material/Add";
 import moment from "moment";
+import { useParams } from "next/navigation";
 
 import {
   suggestion_form_image,
@@ -49,6 +50,8 @@ import { SuggestedMeasurement } from "../../src/components/dashboard/suggestedme
 import { SuggestedCategories } from "../../src/components/dashboard/suggestedCategories";
 import SuggestedStores from "../../src/components/dashboard/suggestedStores";
 import Store from "../../src/components/individualPage/Store";
+import { RejectionModal } from "../../src/components/modal/rejection-modal";
+import { debounce } from "lodash";
 
 const SuggestedMeals = (props) => {
   const router = useRouter();
@@ -80,7 +83,8 @@ const SuggestedMeals = (props) => {
   const [status2, setStatus2State] = useState("");
   const [message, setMessageState] = useState("");
   const [relateds, setRelatedsState] = useState([]);
-
+  const [openRejectionModal, setOpenRejectionModal] = useState(false);
+  const params = useParams();
   //status filter all "Draft", "Pending", "Public", "Rejected"
   const [status, setStatus] = useState("all");
   const [mealStatus, setMealStatus] = useState("all");
@@ -113,77 +117,123 @@ const SuggestedMeals = (props) => {
     item_type: false,
     first_letter: false,
   });
+  const [filteredItems, setFilteredItems] = useState({});
+  const [filteredStores, setFilteredStores] = useState({});
+  const [filteredDescription, setFilteredDescription] = useState({});
+  const [filteredMesr, setFilteredMesr] = useState({});
+  const [filteredCat, setFilteredCat] = useState({});
 
   useEffect(() => {
     getUserItems();
-  }, [props.auth]);
+  }, [props.auth, filteredItems]);
 
-  console.log(suggestion, "ooo");
   useEffect(() => {
     getAllDescriptions();
-  }, [status, props.auth]);
+  }, [status, props.auth, filteredDescription]);
 
   useEffect(() => {
     getAllMeasurement();
-  }, [mealStatus, props.auth]);
+  }, [mealStatus, props.auth, filteredMesr]);
 
   useEffect(() => {
     getAllCategories();
-  }, [props.Auth]);
+  }, [props.Auth, filteredCat]);
 
   useEffect(() => {
     getAllStores();
-  }, [props.Auth]);
+  }, [props.auth, filteredStores]);
 
-
-  const getUserItems = (newPage) => {
-    if (props.auth.authUser) {
+  const getUserItems = (newPage, item_name = "") => {
+    if (selectedUserType) {
       setSearchType("Item");
       let url;
-      if (props.auth.authUser.user_type === "admin") {
-        url = `/items/${
-          newPage ? newPage : page
-        }?type=Product,Meal,Utensil&status=${itemStatus}`;
-      } else {
+      url = `/items/${newPage ? newPage : page}`;
+
+      const params_ = {};
+
+      for (let entry in filteredItems) {
+        params_[entry] = filteredItems[entry];
+      }
+      console.log(selectedUserType, "props.auth.authUser");
+      if (selectedUserType !== "admin") {
         // url = '/meals/get-meals/' + page + '?user=' + props.auth.authUser._id
-        url =
-          `/items/user-items/${
-            newPage ? newPage : page
-          }?type=Product,Meal,Utensil` +
-          "&userId=" +
-          props.auth.authUser._id;
+        params_.user = props.auth.authUser?._id;
+      }
+      if (item_name) {
+        params_.name = item_name;
       }
 
-      axios.get(url).then((data) => {
-        if (data.data.data) {
-          console.log("data", data.data.data);
-          setSuggestedCountState(data.data.data.count);
-          setPagesState(Math.ceil(data.data.data.count / 10));
-          console.log("data.data.data.count", data.data.data.count);
-          console.log("data.data", data.data.data.items);
-          const products = data.data.data.items?.filter(
-            (ele) => ele.item_type === "Product"
-          );
-          const utensils = data.data.data.items?.filter(
-            (ele) => ele.item_type === "Utensil"
-          );
-          const meals = data.data.data.items?.filter(
-            (ele) => ele.item_type === "Meal"
-          );
-          const item = data.data.data.items?.filter(
-            (ele) =>
-              ele.item_type === "Product" ||
-              ele.item_type === "Meal" ||
-              ele.item_type === "Utensil"
-          );
-          setData({ products, meals, item, utensils });
-          setFilteredSuggestionsState(data.data.data);
-          setSuggestionsState(data.data.data);
-        }
-      });
+      axios
+        .get(url, {
+          params: params_,
+        })
+        .then((data) => {
+          if (data.data.data) {
+            setSuggestedCountState(data.data.data.count);
+            setPagesState(Math.ceil(data.data.data.count / 10));
+            const products = data.data.data.items?.filter(
+              (ele) =>
+                ele.item_type === "Product" || ele.item_type === "Products"
+            );
+            const utensils = data.data.data.items?.filter(
+              (ele) =>
+                ele.item_type === "Utensil" || ele.item_type === "Utensils"
+            );
+            const meals = data.data.data.items?.filter(
+              (ele) => ele.item_type === "Meal" || ele.item_type === "Meals"
+            );
+            const item = data.data.data.items?.filter(
+              (ele) =>
+                ele.item_type === "Product" ||
+                ele.item_type === "Meal" ||
+                ele.item_type === "Utensil" ||
+                ele.item_type === "Utensils" ||
+                ele.item_type === "Meals" ||
+                ele.item_type === "Products"
+            );
+            setData({ products, meals, item, utensils });
+            setFilteredSuggestionsState(data.data.data);
+            setSuggestionsState(data.data.data);
+          }
+        });
     }
   };
 
+  const handleFilter = (key, value) => {
+    setPageState(1);
+    setFilteredItems({
+      ...filteredItems,
+      [key]: value,
+    });
+  };
+  const handleCatFilter = (key, value) => {
+    setCatPage(1);
+    setFilteredCat({
+      ...filteredCat,
+      [key]: value,
+    });
+  };
+  const handleFilterStores = (key, value) => {
+    setStorePage(1);
+    setFilteredStores({
+      ...filteredStores,
+      [key]: value,
+    });
+  };
+  const handleFilteredDescription = (key, value) => {
+    setDescpage(1);
+    setFilteredDescription({
+      ...filteredDescription,
+      [key]: value,
+    });
+  };
+  const handleFilteredMesr = (key, value) => {
+    setMesrpage(1);
+    setFilteredMesr({
+      ...filteredMesr,
+      [key]: value,
+    });
+  };
   const filterItemByDate = () => {
     let item = [];
     if (!dateFilter) {
@@ -206,20 +256,24 @@ const SuggestedMeals = (props) => {
     });
   };
 
-  const getAllDescriptions = async (newPage) => {
+  const getAllDescriptions = async (newPage, name) => {
     try {
-      console.log(
-        `/description/${newPage ? newPage : descPage}?status=${status}`
-      );
+      const params_ = {};
+      for (let entry in filteredDescription) {
+        params_[entry] = filteredDescription[entry];
+      }
+      if (name) {
+        params_.description_name = name;
+      }
+
       const resp = await axios.get(
-        `/description/${newPage ? newPage : descPage}?status=${status}`
+        `/description/${newPage ? newPage : descPage}?status=${status}`,
+        {
+          params: params_,
+        }
       );
-      if (
-        Array.isArray(resp?.data?.data.description) &&
-        resp?.data?.data?.description?.length
-      ) {
+      if (Array.isArray(resp?.data?.data.description)) {
         setAllDescriptions(resp.data.data.description);
-        console.log("description--", resp.data.data);
         setDescpages(Math.ceil(data.data.data.count / 10));
       }
     } catch (e) {
@@ -251,15 +305,23 @@ const SuggestedMeals = (props) => {
     }
   };
 
-  const getAllMeasurement = async (newPage) => {
+  const getAllMeasurement = async (newPage, name) => {
     try {
+      const params_ = {};
+
+      for (let entry in filteredMesr) {
+        params_[entry] = filteredMesr[entry];
+      }
+      if (name) {
+        params_.measurement_key = name;
+      }
       const resp = await axios.get(
-        `/measurement/${newPage ? newPage : mesrPage}?status=${mealStatus}`
+        `/measurement/${newPage ? newPage : mesrPage}?status=${mealStatus}`,
+        {
+          params: params_,
+        }
       );
-      if (
-        Array.isArray(resp?.data?.data?.measurement) &&
-        resp?.data?.data?.measurement?.length
-      ) {
+      if (Array.isArray(resp?.data?.data?.measurement)) {
         setAllMeasurement(resp.data.data?.measurement);
         setMesrpages(Math.ceil(resp.data.data.count / 10));
       }
@@ -291,18 +353,21 @@ const SuggestedMeals = (props) => {
       console.log(e);
     }
   };
-  const getAllCategories = async (newPage) => {
+  const getAllCategories = async (newPage, name) => {
     try {
+      const params = { ...filteredCat };
+      if (name) {
+        params.category_name = name;
+      }
       const resp = await axios.get(
-        `/categories/get-all-categories/${newPage ? newPage : catPage}`
+        `/categories/get-all-categories/${newPage ? newPage : catPage}`,
+        {
+          params: params,
+        }
       );
-      if (
-        Array.isArray(resp?.data?.data.categories) &&
-        resp?.data?.data?.categories?.length
-      ) {
+      if (Array.isArray(resp?.data?.data.categories)) {
         setAllCategories(resp.data.data.categories);
-        console.log("categories--", resp.data.data.categories);
-        setDescpages(Math.ceil(data.data.data.count / 10));
+        setCatPages(Math.ceil(data.data.data.count / 10));
       }
     } catch (e) {
       console.log("err", e);
@@ -348,19 +413,26 @@ const SuggestedMeals = (props) => {
       console.log(e);
     }
   };
-  const getAllStores = async (newPage) => {
+  const getAllStores = async (newPage, name) => {
     try {
-      const resp = await axios.get(
-        `/stores/getallstores/${newPage ? newPage : storePage}`
-      );
-      if (
-        Array.isArray(resp?.data?.data.products) &&
-        resp?.data?.data?.products?.length
-      ) {
-        setAllStores(resp?.data?.data.products);
-        console.log("storess--", resp?.data?.data.products);
+      const params_ = {};
 
-        setStorePages(Math.ceil(data.data.data.count / 10));
+      for (let entry in filteredStores) {
+        params_[entry] = filteredStores[entry];
+      }
+      if (name) {
+        params_.store_key = name;
+      }
+      const resp = await axios.get(
+        `/stores/getallstores/${newPage ? newPage : storePage}`,
+        {
+          params: params_,
+        }
+      );
+      if (Array.isArray(resp?.data?.data.products)) {
+        setAllStores(resp?.data?.data.products);
+
+        setStorePages(Math.ceil(resp.data.data.count / 10));
       }
     } catch (e) {
       console.log("err", e);
@@ -395,7 +467,6 @@ const SuggestedMeals = (props) => {
         status: type,
       });
       toggleChangeStoreStatus();
-      console.log("resss", res);
       getAllStores();
       toast.success("Status successfully updated");
     } catch (e) {
@@ -408,7 +479,6 @@ const SuggestedMeals = (props) => {
       const resp = await axios.delete(`/stores/deletestore/${id}`);
       toast.success("Store deleted successfully");
       getAllStores();
-      console.log(resp, "respo");
     } catch (e) {
       console.log(e);
     }
@@ -457,111 +527,131 @@ const SuggestedMeals = (props) => {
   function handleSearch(e) {
     setSearchSuggestedSuggestionState(e.target.value);
   }
+  const searchSuggested = async (name) => {
+    const user = localStorage.getItem("user") ?? {};
 
-  function searchSuggested(e) {
-    let url;
-    if (searchType === "Meal") {
-      if (props.auth.authUser.user_type === "admin") {
-        url = "/meals/get-meals/1?meal_name=" + searchSuggestedSuggestion;
-      } else {
-        url =
-          "/meals/get-meals/1?user=" +
-          props.auth.authUser._id +
-          "&meal_name=" +
-          searchSuggestedSuggestion;
-      }
-    } else if (searchType === "Product") {
-      if (props.auth.authUser.user_type === "admin") {
-        url =
-          "/products/get-all-products/1?product_name=" +
-          searchSuggestedSuggestion;
-      } else {
-        url =
-          "/products/get-all-products/1?user=" +
-          props.auth.authUser._id +
-          "&product_name=" +
-          searchSuggestedSuggestion;
-      }
-    } else {
-      if (props.auth.authUser.user_type === "admin") {
-        url =
-          "/categories/get-all-categories/1?product_name=" +
-          searchSuggestedSuggestion;
-      } else {
-        url =
-          "/categories/get-all-categories/1?user=" +
-          props.auth.authUser._id +
-          "&product_name=" +
-          searchSuggestedSuggestion;
-      }
+    if (searchType === "Item") {
+      getUserItems(0, searchSuggestedSuggestion);
+    } else if (searchType === "Store") {
+      getAllStores(0, searchSuggestedSuggestion);
+    } else if (searchType === "Category") {
+      getAllCategories(0, searchSuggestedSuggestion);
+    } else if (searchType === "Description") {
+      getAllDescriptions(0, searchSuggestedSuggestion);
+    } else if (searchType === "Measurement") {
+      getAllMeasurement(0, searchSuggestedSuggestion);
     }
-    let url2;
-    if (searchType === "Meal") {
-      if (props.auth.authUser.user_type === "admin") {
-        url2 = "/meals/get-meals/1";
-      } else {
-        url2 = "/meals/get-meals/1?user=" + props.auth.authUser._id;
-      }
-    } else if (searchType === "Product") {
-      if (props.auth.authUser.user_type === "admin") {
-        url2 = "/products/get-all-products/1";
-      } else {
-        url2 = "/products/get-all-products/1?user=" + props.auth.authUser._id;
-      }
-    } else {
-      if (props.auth.authUser.user_type === "admin") {
-        url2 = "/categories/get-all-categories/1";
-      } else {
-        url2 =
-          "/categories/get-all-categories/1?user=" + props.auth.authUser._id;
-      }
+    try {
+    } catch (error) {
+      console.log(error);
     }
-    if (e.keyCode) {
-      if (e.keyCode === 13) {
-        if (searchSuggestedSuggestion.length >= 1) {
-          axios.get(url).then((data) => {
-            console.log(data.data);
-            if (data.data.data) {
-              setSuggestedCountState(data.data.data.count);
-              if (data.data.data.count > 10) {
-                setPagesState(Math.ceil(data.data.data.count / 10));
-              }
-              if (searchType === "Meal") {
-                setFilteredSuggestionsState(data.data.data.meals);
-                setSuggestionsState(data.data.data.meals);
-              } else {
-                setFilteredSuggestionsState(data.data.data.products);
-                setSuggestionsState(data.data.data.products);
-              }
-            }
-          });
-        } else {
-          getSuggestion(url2);
-        }
-      }
-    } else {
-      if (searchSuggestedSuggestion.length >= 1) {
-        axios.get(url).then((data) => {
-          console.log(data.data);
-          if (data.data.data) {
-            setSuggestedCountState(data.data.data.count);
-            if (data.data.data.count > 10) {
-              setPagesState(Math.ceil(data.data.data.count / 10));
-            }
-            if (searchType === "Meal") {
-              setFilteredSuggestionsState(data.data.data.meals);
-              setSuggestionsState(data.data.data.meals);
-            } else {
-              setFilteredSuggestionsState(data.data.data.products);
-              setSuggestionsState(data.data.data.products);
-            }
-          }
-        });
-      } else {
-        getSuggestion(url2);
-      }
-    }
-  }
+    return name;
+  };
+
+  // function searchSuggested(e) {
+  //   let url;
+  //   if (searchType === "Meal") {
+  //     if (props.auth.authUser.user_type === "admin") {
+  //       url = "/meals/get-meals/1?meal_name=" + searchSuggestedSuggestion;
+  //     } else {
+  //       url =
+  //         "/meals/get-meals/1?user=" +
+  //         props.auth.authUser._id +
+  //         "&meal_name=" +
+  //         searchSuggestedSuggestion;
+  //     }
+  //   } else if (searchType === "Product") {
+  //     if (props.auth.authUser.user_type === "admin") {
+  //       url =
+  //         "/products/get-all-products/1?product_name=" +
+  //         searchSuggestedSuggestion;
+  //     } else {
+  //       url =
+  //         "/products/get-all-products/1?user=" +
+  //         props.auth.authUser._id +
+  //         "&product_name=" +
+  //         searchSuggestedSuggestion;
+  //     }
+  //   } else {
+  //     if (props.auth.authUser.user_type === "admin") {
+  //       url =
+  //         "/categories/get-all-categories/1?product_name=" +
+  //         searchSuggestedSuggestion;
+  //     } else {
+  //       url =
+  //         "/categories/get-all-categories/1?user=" +
+  //         props.auth.authUser._id +
+  //         "&product_name=" +
+  //         searchSuggestedSuggestion;
+  //     }
+  //   }
+  //   let url2;
+  //   if (searchType === "Meal") {
+  //     if (props.auth.authUser.user_type === "admin") {
+  //       url2 = "/meals/get-meals/1";
+  //     } else {
+  //       url2 = "/meals/get-meals/1?user=" + props.auth.authUser._id;
+  //     }
+  //   } else if (searchType === "Product") {
+  //     if (props.auth.authUser.user_type === "admin") {
+  //       url2 = "/products/get-all-products/1";
+  //     } else {
+  //       url2 = "/products/get-all-products/1?user=" + props.auth.authUser._id;
+  //     }
+  //   } else {
+  //     if (props.auth.authUser.user_type === "admin") {
+  //       url2 = "/categories/get-all-categories/1";
+  //     } else {
+  //       url2 =
+  //         "/categories/get-all-categories/1?user=" + props.auth.authUser._id;
+  //     }
+  //   }
+  //   if (e.keyCode) {
+  //     if (e.keyCode === 13) {
+  //       if (searchSuggestedSuggestion.length >= 1) {
+  //         axios.get(url).then((data) => {
+  //           console.log(data.data);
+  //           if (data.data.data) {
+  //             setSuggestedCountState(data.data.data.count);
+  //             if (data.data.data.count > 10) {
+  //               setPagesState(Math.ceil(data.data.data.count / 10));
+  //             }
+  //             if (searchType === "Meal") {
+  //               setFilteredSuggestionsState(data.data.data.meals);
+  //               setSuggestionsState(data.data.data.meals);
+  //             } else {
+  //               setFilteredSuggestionsState(data.data.data.products);
+  //               setSuggestionsState(data.data.data.products);
+  //             }
+  //           }
+  //         });
+  //       } else {
+  //         getSuggestion(url2);
+  //       }
+  //     }
+  //   } else {
+  //     if (searchSuggestedSuggestion.length >= 1) {
+  //       axios.get(url).then((data) => {
+  //         console.log(data.data);
+  //         if (data.data.data) {
+  //           setSuggestedCountState(data.data.data.count);
+  //           if (data.data.data.count > 10) {
+  //             setPagesState(Math.ceil(data.data.data.count / 10));
+  //           }
+  //           if (searchType === "Meal") {
+  //             setFilteredSuggestionsState(data.data.data.meals);
+  //             setSuggestionsState(data.data.data.meals);
+  //           } else {
+  //             setFilteredSuggestionsState(data.data.data.products);
+  //             setSuggestionsState(data.data.data.products);
+  //           }
+  //         }
+  //       });
+  //     } else {
+  //       getSuggestion(url2);
+  //     }
+  //   }
+  // }
 
   function searchRelated(e) {
     let searchVal = e.target.value;
@@ -693,76 +783,25 @@ const SuggestedMeals = (props) => {
     setChangeStoreStatus(!changeStoreStatus);
   }
 
-  // function handleStatusType(type) {
-  //     setStatusTypeState(type)
-  //     let url1
-  //     if (searchType === 'Meal') {
-  //         url1 = '/meals/update/'
-  //     } else if (searchType === 'Product') {
-  //         url1 = '/products/update/'
-  //     } else {
-  //         url1 = '/categories/update/'
-  //     }
-  //     axios.post(url1 + suggestion._id, { status: type }).then(res => {
-  //         if (res.data.data) {
-  //             suggestion.publicly_available = type
-  //             let url2
-  //             if (searchType === 'Meal') {
-  //                 if (props.auth.authUser.user_type === 'admin') {
-  //                     url2 = '/meals/get-meals/1'
-  //                 } else {
-  //                     url2 = '/meals/get-meals/1?user=' + props.auth.authUser._id
-  //                 }
-  //             } else if (searchType === 'Product') {
-  //                 if (props.auth.authUser.user_type === 'admin') {
-  //                     url2 = '/products/get-all-products/1'
-  //                 } else {
-  //                     url2 = '/products/get-all-products/1?user=' + props.auth.authUser._id
-  //                 }
-  //             } else {
-  //                 if (props.auth.authUser.user_type === 'admin') {
-  //                     url2 = '/categories/get-all-categories/1'
-  //                 } else {
-  //                     url2 = '/categories/get-all-categories/1?user=' + props.auth.authUser._id
-  //                 }
-  //             }
-  //             getSuggestion(url2, searchType)
-  //         }
-  //     })
-  //     toggleChangeStatus()
-  // }
-  //  const handleStatusType = async (type) => {
-  //   try(
-  //     setStatusTypeState(type)
-  //     let url = 'items/item-control'
-  //    await axios.post(url, {
-  //         itemId: suggestion._id,
-  //         "status": type,
-  //         })
-  //         toggleChangeStatus()
-  //   )catch(e){
-  //     console.log(e)
-  //   }
-  // }
-  const handleStatusType = async (type) => {
+  const handleStatusType = async (type, id) => {
     try {
       setStatusTypeState(type);
+
       const res = await axios.post(`/items/item-control`, {
-        itemId: suggestion._id,
+        itemId: id,
         status: type,
       });
-      toggleChangeStatus();
-      console.log("resss", res);
+
       if (res.status === 200) {
-        getUserItems();
+        getUserItems(); // Fetch updated data
         toast.success("Item status successfully updated");
-      } else {
-        toast.error("");
       }
     } catch (e) {
-      console.log(e, "errr");
+      console.error("Error updating status:", e);
+      toast.error("Something went wrong");
     }
   };
+
   const handleSendForReview = async (id, type) => {
     try {
       setStatusTypeState(type);
@@ -932,10 +971,10 @@ const SuggestedMeals = (props) => {
       axios
         .get(
           url +
-            "1?publicly_available=Public&" +
-            (searchType === "Meal" ? "meal_name" : "product_name") +
-            "=" +
-            e.target.value
+          "1?publicly_available=Public&" +
+          (searchType === "Meal" ? "meal_name" : "product_name") +
+          "=" +
+          e.target.value
         )
         .then((data) => {
           console.log(data.data);
@@ -1336,6 +1375,10 @@ const SuggestedMeals = (props) => {
     }
   };
   // console.log(suggestion.prepime, 'prep time not showing')
+  const selectedUserType = useSelector(
+    (state) => state.userType.selectedUserType
+  );
+
   return (
     <div className={container + " " + col2}>
       <div className="alert">
@@ -1357,25 +1400,140 @@ const SuggestedMeals = (props) => {
             {props.auth.authUser && (
               <div className={styles.suggestedmeal_container}>
                 <div className={styles.suggestedmeal_search_con}>
-                  {/* <div className={styles.search_con}>
-                                        <div className={styles.search_box}>
-                                            <p onClick={searchSuggested} className={styles.search_icon}>
-                                                <SearchIcon className={styles.search_icon} />
-                                            </p>
-                                            <input
-                                                type="text"
-                                                name="search"
-                                                onChange={handleSearch}
-                                                onKeyUp={searchSuggested}
-                                                className={styles.search_input}
-                                                placeholder="Search for products"
-                                            />
-                                        </div>
-                                        <div className={styles.search_button} onClick={searchSuggested}>Search</div>
-                                    </div> */}
-                  {props.auth.authUser.user_type === "customer" && (
-                    <Link href="/dashboard/createstore">Create Store</Link>
+                  {searchType === "Item" && (
+                    <div className={styles.search_con}>
+                      <div className={styles.search_box}>
+                        <p
+                          onClick={searchSuggested}
+                          className={styles.search_icon}
+                        >
+                          <SearchIcon className={styles.search_icon} />
+                        </p>
+                        <input
+                          type="text"
+                          name="search"
+                          onChange={handleSearch}
+                          // onKeyUp={searchSuggested}
+                          className={styles.search_input}
+                          placeholder="Search for products"
+                        />
+                      </div>
+                      <div
+                        className={styles.search_button}
+                        onClick={searchSuggested}
+                      >
+                        Search
+                      </div>
+                    </div>
                   )}
+                  {searchType === "Category" && (
+                    <div className={styles.search_con}>
+                      <div className={styles.search_box}>
+                        <p
+                          // onClick={searchSuggested}
+                          className={styles.search_icon}
+                        >
+                          <SearchIcon className={styles.search_icon} />
+                        </p>
+                        <input
+                          type="text"
+                          name="search"
+                          onChange={handleSearch}
+                          // onKeyUp={searchSuggested}
+                          className={styles.search_input}
+                          placeholder="Search for category"
+                        />
+                      </div>
+                      <div
+                        className={styles.search_button}
+                        onClick={searchSuggested}
+                      >
+                        Search
+                      </div>
+                    </div>
+                  )}
+                  {searchType === "Store" && (
+                    <div className={styles.search_con}>
+                      <div className={styles.search_box}>
+                        <p
+                          // onClick={searchSuggested}
+                          className={styles.search_icon}
+                        >
+                          <SearchIcon className={styles.search_icon} />
+                        </p>
+                        <input
+                          type="text"
+                          name="search"
+                          onChange={handleSearch}
+                          // onKeyUp={searchSuggested}
+                          className={styles.search_input}
+                          placeholder="Search for store"
+                        />
+                      </div>
+                      <div
+                        className={styles.search_button}
+                        onClick={searchSuggested}
+                      >
+                        Search
+                      </div>
+                    </div>
+                  )}
+                  {searchType === "Description" && (
+                    <div className={styles.search_con}>
+                      <div className={styles.search_box}>
+                        <p
+                          // onClick={searchSuggested}
+                          className={styles.search_icon}
+                        >
+                          <SearchIcon className={styles.search_icon} />
+                        </p>
+                        <input
+                          type="text"
+                          name="search"
+                          onChange={handleSearch}
+                          // onKeyUp={searchSuggested}
+                          className={styles.search_input}
+                          placeholder="Search for description"
+                        />
+                      </div>
+                      <div
+                        className={styles.search_button}
+                        onClick={searchSuggested}
+                      >
+                        Search
+                      </div>
+                    </div>
+                  )}
+                  {searchType === "Measurement" && (
+                    <div className={styles.search_con}>
+                      <div className={styles.search_box}>
+                        <p
+                          // onClick={searchSuggested}
+                          className={styles.search_icon}
+                        >
+                          <SearchIcon className={styles.search_icon} />
+                        </p>
+                        <input
+                          type="text"
+                          name="search"
+                          onChange={handleSearch}
+                          // onKeyUp={searchSuggested}
+                          className={styles.search_input}
+                          placeholder="Search for measurement"
+                        />
+                      </div>
+                      <div
+                        className={styles.search_button}
+                        onClick={searchSuggested}
+                      >
+                        Search
+                      </div>
+                    </div>
+                  )}
+                  {props.auth.authUser.user_type.includes("customer") ===
+                    "customer" && (
+                      <Link href="/dashboard/createstore">Create Store</Link>
+                    )}
                 </div>
                 <div className={styles.suggestedmeal_row2}>
                   <div className={styles.mode_con}>
@@ -1403,7 +1561,7 @@ const SuggestedMeals = (props) => {
                     >
                       Category
                     </div>
-                    {props.auth.authUser.user_type === "admin" && (
+                    {selectedUserType === "admin" && (
                       <>
                         <div
                           onClick={() => handleSearchType2("Description")}
@@ -1448,7 +1606,7 @@ const SuggestedMeals = (props) => {
                       </>
                     )}
                   </div>
-                  {props.auth.authUser.user_type !== "admin" && (
+                  {selectedUserType !== "admin" && (
                     <div className={styles.suggestedmeal_row2_col2}>
                       {/* <h5>Remove Sections(s)</h5> */}
                       <div>
@@ -1469,7 +1627,7 @@ const SuggestedMeals = (props) => {
                         <div>
                           <div
                             className={
-                              props.auth.authUser.user_type === "supplier"
+                              selectedUserType === "supplier"
                                 ? styles.request_tr
                                 : styles.request_tr1
                             }
@@ -1477,20 +1635,74 @@ const SuggestedMeals = (props) => {
                             {/* <input name='id' type="checkbox" /> */}
                             {/* <p className={styles.request_th}>ID number</p> */}
                             <p
-                              onClick={handleFilterFirstLetter}
+                              // onClick={handleFilterFirstLetter}
+                              onClick={() => {
+                                handleFilter(
+                                  "item_name",
+                                  Number(filteredItems?.item_name) === 1
+                                    ? -1
+                                    : 1
+                                );
+                              }}
                               className={styles.request_th}
                             >
                               Name <FillterIcon />
                             </p>
                             <p
                               className={styles.request_th + " " + styles.hide}
-                              onClick={handleFilterByType}
+                              // onClick={handleFilterByType}
+                              onClick={() => {
+                                let item_types = "Product";
+                                if (router?.query.item_type === "Product") {
+                                  item_types = "Meal";
+                                } else if (router?.query.item_type === "Meal") {
+                                  item_types = "Utensil";
+                                } else if (
+                                  router?.query.item_type === "Utensil"
+                                ) {
+                                  item_types = "Product";
+                                }
+                                router.push({
+                                  pathname: router.pathname,
+                                  query: {
+                                    ...router.query,
+                                    item_type: item_types,
+                                  },
+                                });
+                                handleFilter("type", item_types);
+                              }}
                             >
                               Item Type <FillterIcon />
                             </p>
                             <p
                               className={styles.request_th}
-                              onClick={handleStatus}
+                              // onClick={handleStatus}
+                              onClick={() => {
+                                let item_status = "Public";
+                                if (router?.query.item_status === "Public") {
+                                  item_status = "Draft";
+                                } else if (
+                                  router?.query.item_status === "Draft"
+                                ) {
+                                  item_status = "Pending";
+                                } else if (
+                                  router?.query.item_status === "Pending"
+                                ) {
+                                  item_status = "Rejected";
+                                } else if (
+                                  router?.query.item_status === "Rejected"
+                                ) {
+                                  item_status = "Public";
+                                }
+                                router.push({
+                                  pathname: router.pathname,
+                                  query: {
+                                    ...router.query,
+                                    item_status,
+                                  },
+                                });
+                                handleFilter("status", item_status);
+                              }}
                               style={{ display: "flex", cursor: "pointer" }}
                             >
                               Status <FillterIcon />
@@ -1504,7 +1716,15 @@ const SuggestedMeals = (props) => {
                             </p>
 
                             <p
-                              onClick={filterItemByDate}
+                              // onClick={filterItemByDate}
+                              onClick={() => {
+                                handleFilter(
+                                  "createdAt",
+                                  Number(filteredItems?.createdAt) === 1
+                                    ? -1
+                                    : 1
+                                );
+                              }}
                               className={
                                 styles.request_th + " " + styles.hideData
                               }
@@ -1519,7 +1739,7 @@ const SuggestedMeals = (props) => {
                       {searchType === "Item" && (
                         <>
                           {data.item &&
-                            data.item.reverse().map((suggestion) => {
+                            data.item.map((suggestion) => {
                               return (
                                 <SuggestedMealRow
                                   searchType={searchType}
@@ -1544,6 +1764,7 @@ const SuggestedMeals = (props) => {
                                   toggleOpenMeal={toggleOpenMeal}
                                   deleteItem={deleteItem}
                                   handleSendForReview={handleSendForReview}
+                                  handleStatusType={(type) => handleStatusType(type, suggestion)}
                                 />
                               );
                             })}
@@ -1576,7 +1797,7 @@ const SuggestedMeals = (props) => {
                         </>
                       )}
 
-                      {props.auth.authUser.user_type === "admin" && (
+                      {selectedUserType && (
                         <>
                           {searchType === "Description" && (
                             <SuggestedDescription
@@ -1584,6 +1805,11 @@ const SuggestedMeals = (props) => {
                               deleteDescription={deleteDescription}
                               descriptions={allDescriptions}
                               status={status}
+                              filteredDescription={filteredDescription}
+                              setFilteredDescription={setFilteredDescription}
+                              handleFilteredDescription={
+                                handleFilteredDescription
+                              }
                               setStatus={setStatus}
                             />
                           )}
@@ -1593,6 +1819,9 @@ const SuggestedMeals = (props) => {
                               updateMeasurement={updateMeasurement}
                               measurements={allMeasurement}
                               status={mealStatus}
+                              filteredMesr={filteredMesr}
+                              setFilteredMesr={setFilteredMesr}
+                              handleFilteredMesr={handleFilteredMesr}
                               setStatus={setMealStatus}
                             />
                           )}
@@ -1603,6 +1832,8 @@ const SuggestedMeals = (props) => {
                               setStatus={setCategoryStatus}
                               updateCategory={updateCategory}
                               deleteCategory={deleteCategory}
+                              filteredCat={filteredCat}
+                              handleCatFilter={handleCatFilter}
                             />
                           )}
                           {searchType === "Store" && (
@@ -1612,6 +1843,9 @@ const SuggestedMeals = (props) => {
                               changeStoreStatus={changeStoreStatus}
                               toggleChangeStoreStatus={toggleChangeStoreStatus}
                               allstores={allStores}
+                              filteredStores={filteredStores}
+                              setFilteredStores={setFilteredStores}
+                              handleFilterStores={handleFilterStores}
                               deleteStore={deleteStore}
                               updateStoreStatus={updateStoreStatus}
                               openStoreSuggestion={openStoreSuggestion}
@@ -1759,9 +1993,9 @@ const SuggestedMeals = (props) => {
                   </div>
                   {changeStatus && (
                     <div className={styles.select_options2}>
-                      <p onClick={() => handleStatusType("Public")}>Public</p>
-                      <p onClick={() => handleStatusType("Pending")}>Pending</p>
-                      <p onClick={() => handleStatusType("Rejected")}>
+                      <p onClick={() => handleStatusType("Public", suggestion._id)}>Public</p>
+                      <p onClick={() => handleStatusType("Pending", suggestion._id)}>Pending</p>
+                      <p onClick={() => setOpenRejectionModal(true)}>
                         Rejected
                       </p>
                     </div>
@@ -1772,38 +2006,44 @@ const SuggestedMeals = (props) => {
                     status +
                     " " +
                     (suggestion.publicly_available === "Draft" ||
-                    suggestion.publicly_available === "Pending"
+                      suggestion.publicly_available === "Pending"
                       ? pending
                       : suggestion.publicly_available === "Public"
-                      ? approve
-                      : suggestion.publicly_available === "Rejected"
-                      ? rejected
-                      : "")
+                        ? approve
+                        : suggestion.publicly_available === "Rejected"
+                          ? rejected
+                          : "")
                   }
                 >
                   {suggestion.publicly_available}
                 </p>
-              </div>
-              <div className={styles.status}>
-                {suggestion.item_status.map((elem) => (
-                  <p
-                    className={
-                      elem.status === "Public"
-                        ? styles.statusText
-                        : elem.status === "Pending"
-                        ? styles.statusText2
-                        : elem.status === "Rejected"
-                        ? styles.rejected
-                        : styles.statusText2
-                    }
-                  >
-                    {elem.status}
-                  </p>
-                ))}
+
+                <div className={styles.status}>
+                  {suggestion.item_status.map((elem) => (
+                    <p
+                      className={
+                        elem.status === "Public"
+                          ? styles.statusText
+                          : elem.status === "Pending"
+                            ? styles.statusText2
+                            : elem.status === "Rejected"
+                              ? styles.rejected
+                              : styles.statusText2
+                      }
+                    >
+                      {elem.status}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
             {searchType === "Item" ? (
-              <Meal meal={suggestion} auth={props.auth} show={false} />
+              <Meal
+                meal={suggestion}
+                auth={props.auth}
+                show={false}
+                handleStatusType={handleStatusType}
+              />
             ) : (
               searchType === "Product" && (
                 <Product product={suggestion} auth={props.auth} />
@@ -1917,6 +2157,12 @@ const SuggestedMeals = (props) => {
           </div>
         )}
       </div>
+      {openRejectionModal && (
+        <RejectionModal
+          itemId={suggestion._id ?? ""}
+          setOpenModal={setOpenRejectionModal}
+        />
+      )}
       {openModal && (
         <Popup2
           popupType="Meal Suggestion Preview"

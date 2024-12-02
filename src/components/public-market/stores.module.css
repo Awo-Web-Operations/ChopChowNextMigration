@@ -1,852 +1,1120 @@
 .storeImg {
-    width: 100%;
-    height: 194px;
-    background-size: contain;
-    background-position: center;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  width: 100%;
+  height: 174px;
+  background-size: contain;
+  background-position: center;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.marketplace {
+  margin-top: 6rem;
+}
+.disabledspan {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+.searchbar{
+  width: 45%;
+  margin: 5rem auto 0 auto;
+}
+.disabledLetter {
+  color: grey;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 42px;
+  height: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 15px;
+  font-weight: 300;
+  font-family: Inter;
 }
 
+.marketplace h1 {
+  font-size: 30px;
+  font-weight: 600;
+  font-family: Inter;
+}
+.marketplaceText {
+  font-size: 14px;
+  font-weight: 300;
+  font-family: Inter;
+  color: #6d6d6d;
+  margin-top: 0.8rem;
+  width: 60%;
+}
+.flexItems {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+.alphabetContainer {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+  margin: 20px 0;
+  width: 100%;
+  gap: 0.5rem;
+}
+.alphabetContainer2 {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+  margin: 20px 0;
+  width: 100%;
+justify-content: space-between;
+}
+
+.inactivespan {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 42px;
+  height: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 15px;
+  font-weight: 300;
+  font-family: Inter;
+}
+
+.activespan {
+  background-color: #f47900;
+  width: 42px;
+  height: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 300;
+  color: #ffffff;
+}
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6rem;
+  gap: 1rem;
+}
+.activepaginationButton {
+  width: 40px;
+  height: 40px;
+  background-color: #2faa00;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.paginationButton2 {
+  width: 40px;
+  height: 40px;
+  color: #25282b;
+  border: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.disableButn {
+  opacity: 70%;
+  width: 40px;
+  height: 40px;
+  color: #25282b;
+  border: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.storeImgContainer {
+  width: 100%;
+  padding: 0rem 0 4.5rem 0;
+}
+.storeFlex {
+  display: flex;
+  justify-content: center;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.storediv {
+  width: 50%;
+  height: 320px;
+}
+.storediv img {
+  width: 100%;
+  height: 100%;
+}
+.storeDetails {
+  width: 50%;
+  background-color: #1b5218;
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+}
+.storeDetails h3 {
+  font-size: 28px;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+  font-family: Inter;
+}
+.storeDetails p {
+  font-size: 15px;
+  font-weight: 300;
+  color: #ffffff;
+  font-family: Inter;
+}
+.storeLocation {
+  margin-top: 4rem;
+}
 .storeImg1 {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    object-position: center;
-    position: relative;
-    border-radius: 8px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
+  border-radius: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
-.card{
-    width: 100%;
+.topcontainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  align-items: center;
 }
-.dropdownContainer1{
-    background: #000;
-    height: 400px;
-    width: 100%;
-    position: absolute;
-    top: 100%;
+.topcontainer1 {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+.filter {
+  display: flex;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  align-items: center;
+  padding: 10px 10px 10px 10px;
+  border-radius: 4px;
+  gap: 1rem;
+}
+.filter p {
+  font-size: 13px;
+  font-family: Inter;
+  font-weight: 300;
+}
+.card {
+  width: 100%;
 }
 
-.imageContainer{
-    width: 100%;
+.dropdownContainer1 {
+  background: #000;
+  height: 400px;
+  width: 100%;
+  position: absolute;
+  top: 100%;
+}
 
+.imageContainer {
+  width: 100%;
 }
 .storeImg2 {
-    width: 100%;
-    height: 174px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 8px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  width: 100%;
+  height: 174px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .stores {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    width: 100%;
-    gap: 5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  gap: 6rem;
+  row-gap: 6rem;
 }
 
 .stores2 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 70px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 70px;
+  row-gap: 90px;
 }
 
 .stores3 {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: 56px;
-    row-gap: 56px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 56px;
+  row-gap: 56px;
 }
 
-.card1 {}
+.card1 {
+}
 
 .box {
-    width: 100%;
-    height: 254px;
+  width: 100%;
+  height: 254px;
 }
 
 .storeName {
-    margin-top: .5rem;
-    color: #6D6D6D;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 200;
-    line-height: normal;
+  margin-top: 0.5rem;
+  color: #6d6d6d;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
 }
 
 .prep {
-    color: #6D6D6D;
-    font-size: 14px;
-    font-weight: 300;
+  color: #6d6d6d;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .name2 {
-    color: #000;
-    font-size: 13px;
-    font-weight: 200;
+  color: #000;
+  font-size: 13px;
+  font-weight: 200;
 }
 
 .flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: .9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.9rem;
 }
 
 .flexer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: -1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: -1rem;
 }
 
 .store {
-    height: 257px;
-    width: 216px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  height: 257px;
+  width: 216px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
-.storeContainer {
-    padding: 1rem 5rem;
-    /* position: relative; */
+.storeContainer1 {
+  padding: 14rem 5rem;
+  /* position: relative; */
 }
 
 .underline {
-    text-decoration: underline;
-    text-decoration-color: #F47900;
-    color: #F47900;
-    margin-left: .8rem;
-
+  text-decoration: underline;
+  text-decoration-color: #f47900;
+  color: #f47900;
+  margin-left: 0.8rem;
 }
 
 .name {
-    color: #000;
-    font-size: 14px;
-    font-weight: 400;
-    margin-top: 1rem;
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 1rem;
 }
 
 .view {
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    margin-top: 6rem;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 6rem;
 }
 .view2 {
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
 }
 .border {
-    width: 100%;
-    border-top: 1px solid rgba(0, 0, 0, 0.20);
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 .border2 {
-    width: 100%;
-    border-top: 1px solid rgba(0, 0, 0, 0.20);
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .mealContainer {
-    width: 100%;
-    padding: 2rem 5rem;
+  width: 100%;
+  padding: 3rem 5rem;
+}
+.mealContain {
+  width: 100%;
+  padding: 0 5rem;
+}
+.top {
+  width: 100%;
+  padding: 15rem 5rem 0rem 5rem;
 }
 
 .mealContainer1 {
-    width: 100%;
-    padding: 2rem 5rem;
+  width: 100%;
+  padding: 2rem 5rem;
 }
 
 .initial_anime_box {
-    height: 0px;
-    width: 100vw;
-    background-color: #000;
-    transition: ease all 500ms;
+  height: 0px;
+  width: 100vw;
+  background-color: #000;
+  transition: ease all 500ms;
 }
 
 .anime_box {
-    transition: ease all 500ms;
-    height: 300px;
-    width: 100vw;
-    background-color: #000;
+  transition: ease all 500ms;
+  height: 300px;
+  width: 100vw;
+  background-color: #000;
 }
 
 .modalContainer {
-    width: 100%;
-    position: fixed;
-    /* Use 'fixed' instead of 'absolute' for the modal container */
-    top: 0;
-    left: 0;
-    right: 0;
-    /* Use 'right' instead of 'bottom' to cover the bottom */
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.45);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  position: fixed;
+  /* Use 'fixed' instead of 'absolute' for the modal container */
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Use 'right' instead of 'bottom' to cover the bottom */
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
 .modalCard {
-    background: #FFF;
-    width: 70%;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
-
+  background: #fff;
+  width: 70%;
+  margin: 0 auto;
+  max-height: 82vh;
+  overflow-y: scroll;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .modalCard2 {
-    background: #FFF;
-    width: 83%;
-    overflow-y: scroll;
-    max-height: 82vh;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
-
+  background: #fff;
+  width: 83%;
+  overflow-y: scroll;
+  max-height: 82vh;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
-.instruction_img{
-    width: 100% !important;
-    object-fit: cover;
-    height: 200px;
+.instruction_img {
+  width: 100% !important;
+  object-fit: cover;
+  height: 200px;
 }
 
 .flexed {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 3rem 3rem .2rem 3rem;
-    gap: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 3rem 3rem 0.2rem 3rem;
+  gap: 30px;
 }
 
 .flexed2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
 }
 
 .prep {
-    font-size: 13px;
-    font-weight: 100;
-    display: flex;
+  font-size: 13px;
+  font-weight: 100;
+  display: flex;
 }
 
 .prepspan {
-    display: flex;
-    align-items: center;
-    margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
 }
 
 .images {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 .images2 {
-    display: flex;
-    flex-direction: column;
-    width: 33%;
-    height: 100%;
-    padding-left: 2rem;
-    padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  height: 100%;
+  padding-left: 2rem;
+  padding-top: 3rem;
 }
 
 .modalImg {
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
-    height: 300px;
-    object-position: center;
-    object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  height: 300px;
+  object-position: center;
+  object-fit: cover;
 }
 
 .itemName {
-    color: #000;
-    font-size: 32px;
-    font-weight: 500;
+  color: #000;
+  font-size: 32px;
+  font-weight: 500;
 }
 
 .right {
-    width: 100%;
+  width: 100%;
 }
 
 .right2 {
-    width: 34%;
-    margin-top: -2rem;
-    padding-top: 3rem;
+  width: 34%;
+  margin-top: -2rem;
+  padding-top: 3rem;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
 }
-.third .adjust{
-    width: 90%;
+.third .adjust {
+  width: 90%;
 }
 .right .storeName {
-    color: #F47900;
-    font-size: 13px;
-    font-weight: 300;
-    margin-top: -1rem;
+  color: #f47900;
+  font-size: 13px;
+  font-weight: 300;
+  margin-top: -1rem;
 }
 
 .right2 .storeName {
-    color: #F47900;
-    font-size: 13px;
-    font-weight: 300;
-    margin-top: -1rem;
+  color: #f47900;
+  font-size: 13px;
+  font-weight: 300;
+  margin-top: -1rem;
 }
 
 .recipes {
-    width: 50%;
-    margin: auto;
-    height: 100%;
-    padding-right: 2rem;
-    text-align: justify;
-
+  width: 50%;
+  margin: auto;
+  height: 100%;
+  padding-right: 2rem;
+  text-align: justify;
 }
-.recipe{
-    width: 80%;
-    margin: auto;
+.recipe {
+  width: 80%;
+  margin: auto;
 }
 .arr {
-    background-color: #f0efef;
+  background-color: #f0efef;
 }
 
 .instructionStep {
-    color: #353535;
-    font-size: 12.5px;
-    font-weight: 300;
-    line-height: 22.4px;
-    text-align: left;
+  color: #353535;
+  font-size: 12.5px;
+  font-weight: 300;
+  line-height: 22.4px;
+  text-align: left;
 }
-.carouselText{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+.carouselText {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .recipeImg {
-    width: 100%;
-    height: 200px;
+  width: 100%;
+  height: 200px;
 }
 
 .rates {
-    display: flex;
-    justify-content: space-between;
-    width: 25%;
-    margin-top: .7rem;
+  display: flex;
+  justify-content: space-between;
+  width: 25%;
+  margin-top: 0.7rem;
 }
-.rate{
-    font-size: 30px;
+.rate {
+  font-size: 30px;
 }
 
 .intro {
-    color: #353535;
-    font-size: 13px;
-    font-weight: 300;
-    line-height: 20.933px;
-    margin-top: .8rem;
+  color: #353535;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 20.933px;
+  margin-top: 0.8rem;
 }
 
 .right .modalTitle {
-    color: #000;
-    font-size: 17px;
-    font-weight: 500;
-    margin-top: 1rem;
+  color: #000;
+  font-size: 17px;
+  font-weight: 500;
+  margin-top: 1rem;
 }
 
 .right2 .modalTitle {
-    color: #000;
-    font-size: 15px;
-    font-weight: 500;
-    margin-top: 1rem;
+  color: #000;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1rem;
 }
 
 .right .modalTitle2 {
-    color: #000;
-    font-size: 17px;
-    font-weight: 500;
-    margin-top: 3rem;
+  color: #000;
+  font-size: 17px;
+  font-weight: 500;
+  margin-top: 3rem;
 }
 
 .third {
-    border-left: 1px solid rgba(0, 0, 0, 0.20);
-    padding-left: 2rem;
-    padding-right: 1.5rem;
-    width: 30%;
-    padding-top: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 1.5rem;
+  width: 30%;
+  padding-top: 1.5rem;
 }
 
 .third .close {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .preptext {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .flex1 {
-    display: flex;
-    align-items: center;
-    margin-top: .4rem;
+  display: flex;
+  align-items: center;
+  margin-top: 0.4rem;
 }
 
 .cat {
-    display: flex;
-    margin-left: 1rem;
+  display: flex;
+  margin-left: 1rem;
 }
 
 .flex2 {
-    display: flex;
-    width: 22%;
-    align-items: center;
+  display: flex;
+  width: 22%;
+  align-items: center;
 }
 
 .flex2 .box2 {
-    padding: .2rem .6rem;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #F47900;
-    text-align: center;
-    margin-right: 1rem;
-    color: #FFF;
-    font-size: 16px;
-    font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f47900;
+  text-align: center;
+  margin-right: 1rem;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .span .price {
-    color: #000;
-    font-size: 34px;
-    font-weight: 500;
+  color: #000;
+  font-size: 34px;
+  font-weight: 500;
 }
 
 .span {
-    display: flex;
-    align-items: center;
-    margin-top: -2.5rem;
-    justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  margin-top: -2.5rem;
+  justify-content: flex-start;
 }
 
 .end {
-    display: flex;
-    flex-direction: column;
-    margin-top: -3rem;
-    align-items: flex-end;
-    margin-left: 150%;
+  display: flex;
+  flex-direction: column;
+  margin-top: -3rem;
+  align-items: flex-end;
+  margin-left: 96%;
 }
 
 .span .piece {
-    color: #949494;
-    font-size: 14px;
-    font-weight: 300;
-    margin-left: 1.2rem;
+  color: #949494;
+  font-size: 14px;
+  font-weight: 300;
+  margin-left: 1.2rem;
 }
 
 .buttons {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    gap: 20px;
-    padding: 1.5rem 2.5rem 1.5rem 2.5rem;
-
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 1.5rem 2.5rem 1.5rem 2.5rem;
 }
 
 .buttons .outlinebtn {
-    display: flex;
-    height: 40px;
-    padding: 20px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border-radius: 4px;
-    background-color: transparent;
-    border: .5px solid rgba(0, 0, 0, 0.50);
-    outline: 1px solid rgba(0, 0, 0, 0.50);
-    color: #353535;
-    font-size: 14px;
-    font-weight: 500;
+  display: flex;
+  height: 40px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background-color: transparent;
+  border: 0.5px solid rgba(0, 0, 0, 0.5);
+  outline: 1px solid rgba(0, 0, 0, 0.5);
+  color: #353535;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .outlinebtn {
-    display: flex;
-    height: 40px;
-    padding: 20px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border-radius: 4px;
-    background-color: transparent;
-    border: .5px solid rgba(0, 0, 0, 0.50);
-    outline: 1px solid rgba(0, 0, 0, 0.50);
-    color: #353535;
-    font-size: 14px;
-    font-weight: 500;
+  display: flex;
+  height: 40px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background-color: transparent;
+  border: 0.5px solid rgba(0, 0, 0, 0.5);
+  outline: 1px solid rgba(0, 0, 0, 0.5);
+  color: #353535;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .btn {
-    display: flex;
-    height: 40px;
-    padding: 21.4px 25px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 4px;
-    background: #F47900;
-    flex-shrink: 0;
-    color: #FFF;
-    font-size: 14px;
-    font-weight: 400;
-    border: #F47900;
-    outline: #F47900;
+  display: flex;
+  height: 40px;
+  padding: 21.4px 25px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  background: #f47900;
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  border: #f47900;
+  outline: #f47900;
 }
 
 .flex3 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .round {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    background: #949494;
-    color: #FFF;
-    font-size: 22px;
-    font-weight: 500;
-    border-radius: 50%;
-    cursor: pointer;
-    
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #949494;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 50%;
+  cursor: pointer;
 }
-.left2{
-    display: flex;
-    justify-content: flex-end;
+.left2 {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .images1 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin-top: 2rem;
-    column-gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 2rem;
+  column-gap: 1rem;
 }
 
 .img1 {
-    width: 110px;
-    height: 110px;
-    flex-shrink: 0;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  width: auto;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .img1 img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .border {
-    border-bottom: .5px solid rgba(0, 0, 0, 0.10);
-    margin-top: 1.5rem;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  margin-top: 1.5rem;
 }
 
 .modalCard3 {
-    background: #FFF;
-    width: 55%;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
-    padding: 0rem 2.5rem 2rem 2.5rem;
+  background: #fff;
+  width: 55%;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  padding: 0rem 2.5rem 2rem 2.5rem;
 }
 
 .addTitle {
-    color: #000;
-    font-size: 22px;
-    font-weight: 400;
+  color: #000;
+  font-size: 22px;
+  font-weight: 400;
 }
 
 .list {
-    display: flex;
-    align-items: center;
-    margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .list input[type="checkbox"] {
-    width: 22px;
-    height: 22px;
+  width: 22px;
+  height: 22px;
 }
 
 .list p {
-    margin-left: .7rem;
-    font-weight: 200;
-    color: #000;
+  margin-left: 0.7rem;
+  font-weight: 200;
+  color: #000;
 }
 
 .th {
-    font-weight: 100;
-    font-size: 12px;
-    text-align: left;
+  font-weight: 100;
+  font-size: 12px;
+  text-align: left;
 }
 
 .thead {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 1rem;
-    text-align: center;
-    padding-bottom: 1rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 1rem;
+  text-align: center;
+  padding-bottom: 1rem;
 }
 
 .td {
-    font-weight: 100;
-    font-size: 12px;
+  font-weight: 100;
+  font-size: 12px;
 }
 
 .tr {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr .8fr;
-    text-align: justify;
-    gap: 1rem;
-    padding: 1rem 1rem;
-
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.8fr;
+  text-align: justify;
+  gap: 1rem;
+  padding: 1rem 1rem;
 }
 
 .tr:nth-child(odd) {
-    background: #F1F1F1;
-    width: 100%;
-    height: 100%;
+  background: #f1f1f1;
+  width: 100%;
+  height: 100%;
 }
-.end2{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    margin-left: 80%;
-    position: relative;
-    margin-top: -5rem;
+.end2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-left: 80%;
+  position: relative;
+  margin-top: -5rem;
 }
-.des{
-    width: 50%;
+.des {
+  width: 50%;
 }
 
-@media only screen and (max-width: 1100px){
-    .stores {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 3rem;
-    }
-    .stores2 {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 70px;
-    }
-    
-    .stores3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 56px;
-    }
-    .modalCard2 {
-        width: 90%;
-    }
-    .recipe{
-        width: 100%;
-    }
-    .rates {
-        width: 32%;
-    }
-    .end2{
-        margin-left: 70%;
-        margin-top: -4rem;
-    }
+@media only screen and (max-width: 1100px) {
+  .stores {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+  .stores2 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 70px;
+  }
+
+  .stores3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px;
+  }
+  .modalCard2 {
+    width: 90%;
+  }
+  .recipe {
+    width: 100%;
+  }
+  .rates {
+    width: 32%;
+  }
+  .end2 {
+    margin-left: 70%;
+    margin-top: -4rem;
+  }
+  .top {
+    padding: 8rem 2rem 0rem 2rem;
+  }
 }
 @media only screen and (max-width: 920px) {
-    .stores {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 3rem;
-    }
-    .stores2 {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 70px;
-    }
-    .stores3 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 56px;
-    }
-    .storeContainer {
-        padding: 1rem 3rem;
-        position: relative;
-    }
-    .mealContainer {
-        width: 100%;
-        padding: 1rem 3rem;
-    }
-    
-    .mealContainer1 {
-        width: 100%;
-        padding: 1rem 3rem;
-    }
-    .modalCard2 {
-        background: #FFF;
-        width: 95%;
-        margin: 0 auto;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.10);
-    }
-    .images {
-        width: 100%;
-    }
-    .flexed2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-    .modalCard{
-        width: 94%;
-    }
-    .img1 {
-        width: 70px;
-        height: 70px;
-    }
-    .end {
-        margin-left: 150%;
-    }
-    .modalImg {
-        height: 160px;
-    }
-    .right .modalTitle2 {
-        font-size: 13px;
-        margin-top: 1.6rem;
-    }
-    .buttons .outlinebtn {
-        display: flex;
-        height: 30px;
-        padding: 15px;
-        font-size: 12px;
-    }
-    
-    .btn {
-        display: flex;
-        height: 30px;
-        padding: 11.4px 15px;
-        font-size: 12px;
-    }
-    .des{
-        width: 60%;
-    }
-    
+  .stores {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+  .stores2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 70px;
+  }
+  .stores3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 56px;
+  }
+  .storeContainer1 {
+    padding: 7rem 3rem;
+    position: relative;
+  }
+  .mealContainer {
+    width: 100%;
+    padding: 1rem 3rem;
+  }
+
+  .mealContainer1 {
+    width: 100%;
+    padding: 1rem 3rem;
+  }
+  .modalCard2 {
+    background: #fff;
+    width: 95%;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  }
+  .images {
+    width: 100%;
+  }
+  .flexed2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .modalCard {
+    width: 94%;
+  }
+  .img1 {
+    width: 70px;
+    height: 70px;
+  }
+  .end {
+    margin-left: 96%;
+  }
+  .modalImg {
+    height: 160px;
+  }
+  .right .modalTitle2 {
+    font-size: 13px;
+    margin-top: 1.6rem;
+  }
+  .buttons .outlinebtn {
+    display: flex;
+    height: 30px;
+    padding: 15px;
+    font-size: 12px;
+  }
+
+  .btn {
+    display: flex;
+    height: 30px;
+    padding: 11.4px 15px;
+    font-size: 12px;
+  }
+  .des {
+    width: 60%;
+  }
+  .inactivespan {
+    padding: 0 15px;
+    font-size: 14px;
+  }
+  .activespan {
+    font-size: 14px;
+    padding: 0 15px;
+  }
+  .storeDetails {
+    flex-direction: column;
+    width: 100%;
+  }
+  .storeFlex {
+    flex-direction: column;
+  }
+  .storediv {
+    width: 100%;
+  }
+  .storeDetails h3 {
+    font-size: 24px;
+  }
+  .storeDetails p {
+    font-size: 14px;
+  }
+  .storeLocation {
+    margin-top: 3rem;
+  }
+  .topcontainer {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .topcontainer1 {
+    align-items: center;
+  }
+  .marketplace {
+    width: 100%;
+  }
+  .marketplaceText {
+    width: 100%;
+    font-size: 13px;
+  }
+  .flexItems {
+    justify-content: flex-end;
+  }
+  .filter {
+    margin-top: 2rem;
+  }
+  .filter p {
+    font-size: 11px;
+  }
+  .marketplace h1 {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: Inter;
+  }
+  .top {
+    padding: 8rem 2rem 0rem 2rem;
+  }
+  .mealContain {
+    width: 100%;
+    padding: 0 2rem;
+  }
+}
+@media only screen and (max-width: 840px){
+.storeContainer1{
+  padding: 9rem 3rem;
+}
 }
 @media only screen and (max-width: 520px) {
-    .stores {
-        grid-template-columns: repeat(1, 1fr);
-        gap: 3rem;
-    }
-    .stores2 {
-        grid-template-columns: repeat(1, 1fr);
-        gap: 70px;
-    }
-    
-    .stores3 {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 56px;
-    }
-    .flexed2 {
-        display: grid;
-        grid-template-columns: .2fr .5fr;
-    }
-    .modalImg{
-        height: 130px;
-    }
-    .itemName {
-        font-size: 16px;
-    }
-    .round {
-        width: 22px;
-        height: 22px;
-        font-size: 16px;
-    }
-    .rates {
-        width: 50%;
-    }
-    .right .modalTitle {
-        font-size: 13px;
-    }
-    .flexed {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        padding: 2rem 1.2rem .2rem 1.2rem;
-        gap: 10px;
-    }
- 
-    .end {
-        margin-left: 150%;
-    }
-    .images1{
-        column-gap: 1rem;
-        margin-top: 1rem;
-    }
-    .img1{
-        height: 50px;
-        width: 50px;
-    }
-    .end2 {
-        margin-left: 0%;
-        margin-top: 1.2rem;
-    }
-    .right .modalTitle2 {
-        font-size: 13px;
-    }
-    .buttons .outlinebtn {
-        display: flex;
-        height: 25px;
-        padding: 10px;
-        font-size: 10px;
-    }
-    
-    .btn {
-        display: flex;
-        height: 25px;
-        padding: 7.4px 10px;
-        font-size: 10px;
-    }
-    .buttons {
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        gap: 7px;
-        padding: 1.5rem 2.5rem 2rem 2.5rem;
-    
-    }
-    .storeContainer {
-        padding: 1rem 2rem;
-        /* position: relative; */
-    }
-    .mealContainer {
-        width: 100%;
-        padding: 2rem 2rem;
-    }
-    
-    .mealContainer1 {
-        width: 100%;
-        padding: 2rem 2rem;
-    }
-  
+  .stores {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 3rem;
+  }
+  .stores2 {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 70px;
+  }
+
+  .stores3 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 56px;
+  }
+  .flexed2 {
+    display: grid;
+    grid-template-columns: 0.2fr 0.5fr;
+  }
+  .modalImg {
+    height: 130px;
+  }
+  .itemName {
+    font-size: 16px;
+  }
+  .round {
+    width: 22px;
+    height: 22px;
+    font-size: 16px;
+  }
+  .rates {
+    width: 50%;
+  }
+  .right .modalTitle {
+    font-size: 13px;
+  }
+  .flexed {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 2rem 1.2rem 0.2rem 1.2rem;
+    gap: 10px;
+  }
+
+  .end {
+    margin-left: 96%;
+  }
+  .images1 {
+    column-gap: 1rem;
+    margin-top: 1rem;
+  }
+  .img1 {
+    height: 50px;
+    width: 50px;
+  }
+  .end2 {
+    margin-left: 0%;
+    margin-top: 1.2rem;
+  }
+  .right .modalTitle2 {
+    font-size: 13px;
+  }
+  .buttons .outlinebtn {
+    display: flex;
+    height: 25px;
+    padding: 10px;
+    font-size: 10px;
+  }
+
+  .btn {
+    display: flex;
+    height: 25px;
+    padding: 7.4px 10px;
+    font-size: 10px;
+  }
+  .buttons {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 7px;
+    padding: 1.5rem 2.5rem 2rem 2.5rem;
+  }
+  .storeContainer1 {
+    padding: 8rem 2rem;
+    /* position: relative; */
+  }
+  .mealContainer {
+    width: 100%;
+    padding: 2rem 2rem;
+  }
+
+  .mealContainer1 {
+    width: 100%;
+    padding: 2rem 2rem;
+  }
+  .top {
+    padding: 8rem 2rem 0rem 2rem;
+  }
 }
-@media only screen and (max-width: 400px){
-    .des{
-        width: 90%;
-    }
+@media only screen and (max-width: 400px) {
+  .des {
+    width: 90%;
+  }
 }

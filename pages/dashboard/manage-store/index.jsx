@@ -18,7 +18,7 @@ import moment from "moment";
 
 const ManageStores = () => {
   const [allStores, setAllStores] = useState([]);
-  const router = useRouter()
+  const router = useRouter();
   const fetchOneUserStore = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"))?._id;
@@ -37,6 +37,7 @@ const ManageStores = () => {
   useEffect(() => {
     fetchOneUserStore();
   }, []);
+  console.log(allStores, 'ALL')
   return (
     <div className={container + " " + col2}>
       <Head>
@@ -64,10 +65,23 @@ const ManageStores = () => {
           <p>Choose a Store to manage</p>
           <div className={styles.allStores}>
             {allStores.map((elem) => (
-              <div className={styles.one_store} onClick={() => router.push(`/dashboard/management?storeId=${elem._id}`)}>
-                <img src={elem.background_picture} />
+              <div
+                className={styles.one_store}
+                onClick={() =>
+                  router.push(`/dashboard/management?storeId=${elem._id}`)
+                }
+              >
+                <img
+                  src={
+                    elem.background_picture
+                      ? elem.background_picture
+                      : "/assets/store_pics/no-image-store.png"
+                  }
+                />
                 <p className={styles.storeName}>{elem?.store_name}</p>
-                <p className={styles.createdAt}>Created on {moment(elem?.createdAt).format('Do MMM, YYYY')}</p>
+                <p className={styles.createdAt}>
+                  Created on {moment(elem?.createdAt).format("Do MMM, YYYY")}
+                </p>
               </div>
             ))}
           </div>

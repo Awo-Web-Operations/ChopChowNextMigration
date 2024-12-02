@@ -9,9 +9,7 @@ import {
 } from "react";
 import styles from "./public-market.module.css";
 import { FadeLoader } from "react-spinners";
-import { storeList } from "./lists";
 import { HiMiniClock } from "react-icons/hi2";
-import { geocodeByLatLng } from "react-google-places-autocomplete";
 import * as BaseAxios from "axios";
 import { debounce } from "lodash";
 import axios from "../../util/Api";
@@ -25,9 +23,12 @@ export const AddressInput = forwardRef((props, ref) => {
     setShowLocation,
     showCurrentLocation,
     setShowCurrentLocation,
+    currentAddress,
+    isLoading,
+    setCurrentAddress,
+    setIsLoading
   } = props;
-  const [currentAddress, setCurrentAddress] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
   const [allStores, setAllStores] = useState([]);
   const [longlat, setLongLat] = useState({
     latitude: "",
@@ -36,6 +37,7 @@ export const AddressInput = forwardRef((props, ref) => {
   const router = useRouter();
   const pageRef = useRef();
 
+
   useImperativeHandle(ref, () => {
     return {
       handleGetStoreByLocation() {
@@ -43,7 +45,6 @@ export const AddressInput = forwardRef((props, ref) => {
       },
     };
   });
-
   const getAllStores = async (address) => {
     try {
       const response = await axios(`/stores/list/${address}`, {
@@ -62,6 +63,8 @@ export const AddressInput = forwardRef((props, ref) => {
       console.log(error);
     }
   };
+  console.log(allStores, 'all')
+
   useEffect(() => {
     document.addEventListener(
       "click",
@@ -108,7 +111,7 @@ export const AddressInput = forwardRef((props, ref) => {
   }, []);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+   
   }, []);
 
   return (
@@ -140,6 +143,7 @@ export const AddressInput = forwardRef((props, ref) => {
         onClick={() => {
           setShowLocation(!showLocation);
           setShowCurrentLocation(true);
+          navigator.geolocation.getCurrentPosition(onSuccess, onError);
           console.log(showLocation, "showLocation");
         }}
       >

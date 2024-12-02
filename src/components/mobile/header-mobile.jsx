@@ -1,112 +1,69 @@
 import Link from "next/link";
-import React, { useEffect } from "react";
-import { animateScroll as scroll, scrollSpy, Events } from "react-scroll";
+import React, { useEffect, useState } from "react";
 import styles from "../../components/Header/header.module.css";
+import { useRouter } from "next/router";
+
 export const MobileHeader = () => {
+  const [activeLink, setActiveLink] = useState(null);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const router = useRouter();
+
+  const handleSetActive = (id, path) => {
+    console.log("Navigating to:", path); // Debug log
+    setActiveLink(id);
+    router.push(path);
+  };
+
+  const menuItems = [
+    { name: "Marketplace", path: "/marketplace" },
+    { name: "Chef", path: "#" },
+    { name: "Blog", path: "#" },
+  ];
+
   useEffect(() => {
-    Events.scrollEvent.register("begin", (to, element) => {
-      console.log("begin", to, element);
-    });
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setPrevScrollPos(currentScrollPos);
+    };
 
-    Events.scrollEvent.register("end", (to, element) => {
-      console.log("end", to, element);
-    });
-
-    scrollSpy.update();
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      Events.scrollEvent.remove("begin");
-      Events.scrollEvent.remove("end");
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [prevScrollPos]);
 
-  const scrollToTop = () => {
-    scroll.scrollToTop();
-  };
-
-  const scrollToBottom = () => {
-    scroll.scrollToBottom();
-  };
-
-  const scrollToWithOffset = () => {
-    const offset = 100;
-    scroll.scrollTo("meal", {
-      duration: 1000,
-      delay: 0,
-      smooth: true,
-      offset: offset,
-    });
-  };
-
-  const scrollMore = () => {
-    scroll.scrollMore(100);
-  };
-
-  const handleSetActive = (to) => {
-    console.log(to);
-  };
   return (
-    <div>
-      <div className={styles.navbar2}>
+      <div className={visible ? styles.navbar2 : styles.navbar_down_2}>
         <div className={styles.navbar_main_container}>
           <div className={styles.navbar_main}>
             <ul className={styles.navbar_main_links}>
-              <li className={styles.navbar_main_link}>
-                <Link
-                  activeClass="active"
-                  href="/publicMarket/#store"
-                  onSetActive={handleSetActive}
-                  onClick={() =>
-                    scroll.scrollTo(0, { smooth: true, duration: 100 })
-                  }
+              {menuItems?.map((elem, id) => (
+                <li
+                  className={styles.navbar_main_link}
+                  key={id}
+                  onClick={() => handleSetActive(id, elem.path)}
                 >
-                  Stores
-                </Link>
-              </li>
-              <li className={styles.navbar_main_link}>
-                {/* <Link href="/publicMarket/#meal">Meals</Link> */}
-                <Link
-                  activeClass="active"
-                  href="/publicMarket/#meal"
-                  onClick={() =>
-                    scroll.scrollTo(1100, { smooth: true, duration: 100 })
-                  }
-                >
-                  Meals
-                </Link>
-              </li>
-              <li className={styles.navbar_main_link}>
-                {/* <Link href="/publicMarket/#products">Products</Link> */}
-                <Link
-                  activeClass="active"
-                  href="/publicMarket/#product"
-                  onClick={() =>
-                    scroll.scrollTo(2900, { smooth: true, duration: 100 })
-                  }
-                >
-                  Products
-                </Link>
-              </li>
-              <li className={styles.navbar_main_link}>
-                {/* <Link href="/publicMarket/#utensils">Utensils</Link> */}
-                <Link
-                  activeClass="active"
-                  href="/publicMarket/#utensils"
-                  onClick={() =>
-                    scroll.scrollTo(4600, { smooth: true, duration: 100 })
-                  }
-                >
-                  Utensils
-                </Link>
-              </li>
+                  <p
+                    className={
+                      activeLink === id
+                        ? styles.activelink
+                        : styles.inactivelink
+                    }
+                  >
+                    {elem.name}
+                  </p>
+                </li>
+              ))}
             </ul>
 
             <div className={styles.navbar_main_grocery}>
-              <Link href="/grocery">Grocery Lists</Link>
+              <Link href="/groceries">Grocery Lists</Link>
             </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };

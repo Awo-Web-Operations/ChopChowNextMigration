@@ -1,0 +1,43 @@
+.Custom404 {
+  font-size: 200px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  margin-top: -2rem;
+}
+.page {
+  font-size: 22px;
+  font-family: "Inter", sans-serif;
+  margin-top: -7rem;
+  font-weight: 600;
+}
+.img {
+  width: 315px;
+  height: 200px;
+}
+.img img {
+  width: 100%;
+  height: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15rem;
+}
+@media only screen and (max-width: 768px) {
+  .Custom404 {
+    font-size: 120px;
+  }
+  .page {
+    font-size: 14px;
+    margin-top: -4rem;
+  }
+  .img {
+    width: 205px;
+    height: 130px;
+  }
+  .container {
+    padding-top: 10rem;
+  }
+}
